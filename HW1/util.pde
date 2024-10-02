@@ -1,35 +1,67 @@
 public void CGLine(float x1, float y1, float x2, float y2) {
-    // TODO HW1
-    // You need to implement the "line algorithm" in this section.
-    // You can use the function line(x1, y1, x2, y2); to verify the correct answer.
-    // However, remember to comment out before you submit your homework.
-    // Otherwise, you will receive a score of 0 for this part.
-    // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
-    // coordinates (x, y).
-    // For instance: drawPoint(114, 514, color(255, 0, 0)); signifies drawing a red
-    // point at (114, 514).
+    int dx = int(abs(x2 - x1));
+    int dy = int(abs(y2 - y1));
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1; 
+    int err = dx - dy;
+    int e2;
+    while(true){
+      
+      drawPoint(x1,y1,color(0));
+      if (x1 == x2 && y1 == y2) break;
+       e2 = 2 * err;
+    
+    if (e2 > -dy) {
+      err -= dy;
+      x1 += sx;
+    }
+    
+    if (e2 < dx) {
+      err += dx;
+      y1 += sy;
+    }
+  }
 
-    /*
-     stroke(0);
-     noFill();
-     line(x1,y1,x2,y2);
-    */
+    
+    
+     //stroke(0);
+     //noFill();
+     //line(x1,y1,x2,y2);
+     
+    
 }
 
-public void CGCircle(float x, float y, float r) {
-    // TODO HW1
-    // You need to implement the "circle algorithm" in this section.
-    // You can use the function circle(x, y, r); to verify the correct answer.
-    // However, remember to comment out before you submit your homework.
-    // Otherwise, you will receive a score of 0 for this part.
-    // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
-    // coordinates (x, y).
+public void CGCircle(float cx, float cy, float r) {
+    int x = int(r);
+    int y = 0;
+    int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at (r, 0)
+  
+    while (x >= y) {
+      // Draw the circle using symmetry in all octants
+      drawPoint(cx + x, cy + y, color(0));  // First octant
+      drawPoint(cx + y, cy + x, color(0));  // Second octant
+      drawPoint(cx - y, cy + x, color(0));  // Third octant
+      drawPoint(cx - x, cy + y, color(0));  // Fourth octant
+      drawPoint(cx - x, cy - y, color(0));  // Fifth octant
+      drawPoint(cx - y, cy - x, color(0));  // Sixth octant
+      drawPoint(cx + y, cy - x, color(0));  // Seventh octant
+      drawPoint(cx + x, cy - y, color(0));  // Eighth octant
+    
+      y++;
+  
+      if (decisionOver2 <= 0) {
+        decisionOver2 += 2 * y + 1;  // Change in decision criterion for y -> y + 1
+      } else {
+        x--;
+        decisionOver2 += 2 * (y - x) + 1;  // Change for x -> x - 1 and y -> y + 1
+      }
+    }
 
-    /*
-    stroke(0);
-    noFill();
-    circle(x,y,r*2);
-    */
+    
+    //stroke(0);
+    //noFill();
+    //circle(x,y,r*2);
+    
 }
 
 public void CGEllipse(float x, float y, float r1, float r2) {
@@ -41,11 +73,11 @@ public void CGEllipse(float x, float y, float r1, float r2) {
     // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
     // coordinates (x, y).
 
-    /*
+    
     stroke(0);
     noFill();
     ellipse(x,y,r1*2,r2*2);
-    */
+    
 
 }
 
@@ -59,11 +91,11 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
     // coordinates (x, y).
 
-    /*
+    
     stroke(0);
     noFill();
     bezier(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,p4.x,p4.y);
-    */
+    
 }
 
 public void CGEraser(Vector3 p1, Vector3 p2) {
