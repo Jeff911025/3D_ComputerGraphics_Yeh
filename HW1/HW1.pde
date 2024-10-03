@@ -10,6 +10,7 @@ Button clearButton;
 
 ShapeRenderer shapeRenderer;
 ArrayList<ShapeButton> shapeButton;
+
 float eraserSize = 20;
 
 public void setup() {
@@ -21,9 +22,10 @@ public void setup() {
 }
 
 public void draw() {
-
+    //called automatically 60fps
     background(255);
     for (ShapeButton sb : shapeButton) {
+        //check all buttons in list
         sb.run(() -> {
             sb.beSelect();
             shapeRenderer.setRenderer(sb.getRendererType());
