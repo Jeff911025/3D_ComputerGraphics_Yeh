@@ -136,3 +136,43 @@ public class ShapeButton extends Button {
         return null;
     }
 }
+
+
+public class ColorButton extends Button {
+    private boolean selected = false;
+    private color btnColor;
+    public ColorButton(float x, float y, float w, float h, color c) {
+        super(x, y, w, h);
+        this.btnColor = c;
+    }
+
+    public ColorButton(Vector3 p, Vector3 s, color c) {
+        super(p, s);
+        this.btnColor = c;
+    }
+    @Override
+    public void show() {
+        fill(btnColor);  
+        noStroke();
+        rect(pos.x, pos.y, size.x, size.y);
+        
+        if (selected) {
+            stroke(0, 0, 0);
+            noFill();
+            rect(pos.x - 2, pos.y - 2, size.x + 4, size.y + 4);
+        }
+    }
+
+    public void beSelect() {
+        resetColorButton();
+        setSelected(true);
+    }
+
+    public void setSelected(boolean b) {
+        selected = b;
+    }
+
+    public color getColor() {
+        return btnColor;
+    }
+}

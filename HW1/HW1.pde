@@ -6,12 +6,17 @@ ShapeButton curveButton;
 ShapeButton pencilButton;
 ShapeButton eraserButton;
 
+ColorButton redButton;
+ColorButton blueButton;
+ColorButton greenButton;
+
 Button clearButton;
 
 ShapeRenderer shapeRenderer;
 ArrayList<ShapeButton> shapeButton;
-
+ArrayList<ColorButton> colorButton;
 float eraserSize = 20;
+color currentColor = color(0);
 
 public void setup() {
     size(1000, 800);
@@ -24,11 +29,21 @@ public void setup() {
 public void draw() {
     //called automatically 60fps
     background(255);
+    for (ColorButton cb : colorButton) {
+        
+        cb.run(() -> {
+            cb.beSelect();
+            currentColor = cb.getColor();
+            if (shapeRenderer.renderer != null) {
+            shapeRenderer.renderer.setColor(currentColor);
+          }
+        });
+    }
     for (ShapeButton sb : shapeButton) {
         //check all buttons in list
         sb.run(() -> {
             sb.beSelect();
-            shapeRenderer.setRenderer(sb.getRendererType());
+            shapeRenderer.setRenderer(sb.getRendererType(),currentColor);
         });
     }
 
@@ -46,9 +61,15 @@ void resetButton() {
         sb.setSelected(false);
     }
 }
+void resetColorButton() {
+    for (ColorButton cb : colorButton) {
+        cb.setSelected(false);
+    }
+}
 
 public void initButton() {
     shapeButton = new ArrayList<ShapeButton>();
+    colorButton = new ArrayList<ColorButton>();
     lineButton = new ShapeButton(10, 10, 30, 30) {
         @Override
         public void show() {
@@ -164,6 +185,39 @@ public void initButton() {
 
     eraserButton.setBoxAndClickColor(color(250), color(150));
     shapeButton.add(eraserButton);
+    
+    
+    
+    // Color implementation (4x4 color palette)
+    int paletteSize = 10;
+    int padding = 2;
+    int startX = 270;
+    int startY = 10;
+    
+    color[][] colors = {
+        { color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0) },
+        { color(255, 165, 0), color(128, 0, 128), color(0, 255, 255), color(255, 192, 203) },
+        { color(255, 255, 255), color(0, 0, 0), color(128, 128, 128), color(255, 105, 180) },
+        { color(50, 205, 50), color(0, 128, 128), color(75, 0, 130), color(255, 20, 147) } 
+    };
+    
+    for (int row = 0; row < colors.length; row++) {
+        for (int col = 0; col < colors[row].length; col++) {
+            ColorButton colorButton = new ColorButton(
+                startX + (paletteSize + padding) * col,
+                startY + (paletteSize + padding) * row,
+                paletteSize,
+                paletteSize,
+                colors[row][col]
+            );
+            this.colorButton.add(colorButton);
+        }
+    }
+    
+
+    
+
+    
 
 }
 

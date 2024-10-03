@@ -1,4 +1,4 @@
-public void CGLine(float x1, float y1, float x2, float y2) {
+public void CGLine(float x1, float y1, float x2, float y2,color currentcolor) {
     int dx = int(abs(x2 - x1));
     int dy = int(abs(y2 - y1));
     int sx = (x1 < x2) ? 1 : -1;
@@ -7,7 +7,7 @@ public void CGLine(float x1, float y1, float x2, float y2) {
     int e2;
     while(true){
       
-      drawPoint(x1,y1,color(0));
+      drawPoint(x1,y1,currentcolor);
       if (x1 == x2 && y1 == y2) break;
        e2 = 2 * err;
     
@@ -31,21 +31,21 @@ public void CGLine(float x1, float y1, float x2, float y2) {
     
 }
 
-public void CGCircle(float cx, float cy, float r) {
+public void CGCircle(float cx, float cy, float r,color currentcolor) {
     int x = int(r);
     int y = 0;
     int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at (r, 0)
   
     while (x >= y) {
       // Draw the circle using symmetry in all octants
-      drawPoint(cx + x, cy + y, color(0));  // First octant
-      drawPoint(cx + y, cy + x, color(0));  // Second octant
-      drawPoint(cx - y, cy + x, color(0));  // Third octant
-      drawPoint(cx - x, cy + y, color(0));  // Fourth octant
-      drawPoint(cx - x, cy - y, color(0));  // Fifth octant
-      drawPoint(cx - y, cy - x, color(0));  // Sixth octant
-      drawPoint(cx + y, cy - x, color(0));  // Seventh octant
-      drawPoint(cx + x, cy - y, color(0));  // Eighth octant
+      drawPoint(cx + x, cy + y, currentcolor);  // First octant
+      drawPoint(cx + y, cy + x, currentcolor);  // Second octant
+      drawPoint(cx - y, cy + x, currentcolor);  // Third octant
+      drawPoint(cx - x, cy + y, currentcolor);  // Fourth octant
+      drawPoint(cx - x, cy - y, currentcolor);  // Fifth octant
+      drawPoint(cx - y, cy - x, currentcolor);  // Sixth octant
+      drawPoint(cx + y, cy - x, currentcolor);  // Seventh octant
+      drawPoint(cx + x, cy - y, currentcolor);  // Eighth octant
     
       y++;
   
@@ -64,7 +64,7 @@ public void CGCircle(float cx, float cy, float r) {
     
 }
 
-public void CGEllipse(float x, float y, float r1, float r2) {
+public void CGEllipse(float x, float y, float r1, float r2,color currentcolor) {
     // TODO HW1
     // You need to implement the "ellipse algorithm" in this section.
     // You can use the function ellipse(x, y, r1,r2); to verify the correct answer.
@@ -74,14 +74,14 @@ public void CGEllipse(float x, float y, float r1, float r2) {
     // coordinates (x, y).
 
     
-    stroke(0);
+    stroke(currentcolor);
     noFill();
     ellipse(x,y,r1*2,r2*2);
     
 
 }
 
-public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color currentcolor) {
     // TODO HW1
     // You need to implement the "bezier curve algorithm" in this section.
     // You can use the function bezier(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x,
@@ -92,7 +92,7 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     // coordinates (x, y).
 
     
-    stroke(0);
+    stroke(currentcolor);
     noFill();
     bezier(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,p4.x,p4.y);
     
