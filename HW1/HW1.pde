@@ -5,6 +5,7 @@ ShapeButton ellipseButton;
 ShapeButton curveButton;
 ShapeButton pencilButton;
 ShapeButton eraserButton;
+ShapeButton curveButton_stand;
 
 ColorButton redButton;
 ColorButton blueButton;
@@ -19,7 +20,7 @@ float eraserSize = 20;
 color currentColor = color(0);
 
 public void setup() {
-    size(1000, 800);
+    size(1600, 900);
     background(255);
     shapeRenderer = new ShapeRenderer();
     initButton();
@@ -159,6 +160,8 @@ public void initButton() {
 
     curveButton.setBoxAndClickColor(color(250), color(150));
     shapeButton.add(curveButton);
+    
+    
 
     clearButton = new Button(width - 50, 10, 30, 30);
     clearButton.setBoxAndClickColor(color(250), color(150));
@@ -187,16 +190,33 @@ public void initButton() {
     shapeButton.add(eraserButton);
     
     
+    curveButton_stand = new ShapeButton(255, 10, 30, 30) {
+        @Override
+        public void show() {
+            super.show();
+            stroke(0);
+            bezier(pos.x, pos.y, pos.x + size.x, pos.y + size.y, pos.x, pos.y + size.y, pos.x + size.x, pos.y);
+        }
+
+        @Override
+        public Renderer getRendererType() {
+            return new CurveRenderer_stand();
+        }
+
+    };
+
+    curveButton_stand.setBoxAndClickColor(color(250), color(150));
+    shapeButton.add(curveButton_stand);
     
     // Color implementation (4x4 color palette)
     int paletteSize = 10;
     int padding = 2;
-    int startX = 270;
+    int startX = 600;
     int startY = 10;
     
     color[][] colors = {
-        { color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0) },
-        { color(255, 165, 0), color(128, 0, 128), color(0, 255, 255), color(255, 192, 203) },
+        { color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(255, 255, 0) },  
+        { color(255, 165, 0), color(128, 0, 128), color(0, 255, 255), color(255, 192, 203) }, 
         { color(255, 255, 255), color(0, 0, 0), color(128, 128, 128), color(255, 105, 180) },
         { color(50, 205, 50), color(0, 128, 128), color(75, 0, 130), color(255, 20, 147) } 
     };
@@ -216,7 +236,7 @@ public void initButton() {
     
 
     
-
+  
     
 
 }

@@ -292,7 +292,7 @@ class CurveRenderer implements Renderer{
                   break;
                 case 3:
                   cp4 = new Vector3(mouseX,mouseY,0);
-                  shapeRenderer.addShape(new Curve(cp1,cp3,cp4,cp2, currentColor));
+                  shapeRenderer.addShape(new fourcCurve(cp1,cp3,cp4,cp2, currentColor));
                  
                   break;
               }
@@ -301,7 +301,12 @@ class CurveRenderer implements Renderer{
               once = true;
           }
       }else if(mousePressed&& mouseButton == RIGHT){
-          times = 0;          
+        if(times==3){
+          shapeRenderer.addShape(new fourcCurve(cp1,cp3,cp2,cp2, currentColor));
+          
+        }
+      times = 0;
+                   
       }
       else{
           once = false;
@@ -311,6 +316,64 @@ class CurveRenderer implements Renderer{
       if(times==1) CGCurve(cp1,cp1,cp ,cp,currentColor);
       if(times==2) CGCurve(cp1,cp,cp2 ,cp2,currentColor);
       if(times==3) CGCurve(cp1,cp3,cp ,cp2,currentColor);
+      
+  }
+}
+
+
+
+class CurveRenderer_stand implements Renderer{
+  private boolean once;
+  private int times;
+  private Vector3 cp1;
+  private Vector3 cp2;
+  private Vector3 cp3;
+  private Vector3 cp4;
+  private color currentColor;
+  @Override
+    public void setColor(color c) {
+        currentColor = c;  
+    }
+  @Override
+  public void render(){
+      if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
+      if(mousePressed&& mouseButton == LEFT){
+          if(!once){   
+              switch(times){
+                case 0:
+                  cp1 = new Vector3(mouseX,mouseY,0);
+                  break;
+                case 1:
+                  cp2 = new Vector3(mouseX,mouseY,0);
+                  break;
+                case 2:
+                  cp3 = new Vector3(mouseX,mouseY,0);
+                  break;
+                case 3:
+                  cp4 = new Vector3(mouseX,mouseY,0);
+                  shapeRenderer.addShape(new fourcCurve(cp1,cp2,cp3,cp4, currentColor));
+                 
+                  break;
+              }
+              times += 1;
+              times %=4;
+              once = true;
+          }
+      }else if(mousePressed&& mouseButton == RIGHT){
+        if(times==3){
+          shapeRenderer.addShape(new fourcCurve(cp1,cp2,cp3,cp3, currentColor));
+          
+        }
+      times = 0;      
+      }
+      else{
+          once = false;
+      }
+      Vector3 cp = new Vector3(mouseX,mouseY,0);
+      if(times==0) return;
+      if(times==1) CGCurve(cp1,cp1,cp ,cp,currentColor);
+      if(times==2) CGCurve(cp1,cp2,cp ,cp,currentColor);
+      if(times==3) CGCurve(cp1,cp2,cp3 ,cp,currentColor);
       
   }
 }

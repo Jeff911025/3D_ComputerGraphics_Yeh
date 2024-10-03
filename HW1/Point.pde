@@ -102,23 +102,28 @@ public class Ellipse implements Shape {
 }
 
 
-public class Curve implements Shape {
+public class fourcCurve implements Shape {
     Vector3 cpoint1, cpoint2, cpoint3, cpoint4;
     color shapeColor;
 
-    public Curve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, color c) {
+    public fourcCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, color c) {
         cpoint1 = p1;
         cpoint2 = p2;
         cpoint3 = p3;
         cpoint4 = p4;
         shapeColor = c;
     }
+    
+    
 
     @Override
     public void drawShape() {
-        CGCurve(cpoint1, cpoint2, cpoint3, cpoint4, shapeColor);  // 傳遞顏色
+          CGCurve(cpoint1, cpoint2, cpoint3, cpoint4, shapeColor);
+        
     }
 }
+
+
 
 
 public class EraseArea implements Shape {

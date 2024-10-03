@@ -34,18 +34,17 @@ public void CGLine(float x1, float y1, float x2, float y2,color currentcolor) {
 public void CGCircle(float cx, float cy, float r,color currentcolor) {
     int x = int(r);
     int y = 0;
-    int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at (r, 0)
+    int decisionOver2 = 1 - int(r);   // Decision criterion divided by 2 evaluated at (r, 0)
   
     while (x >= y) {
-      // Draw the circle using symmetry in all octants
-      drawPoint(cx + x, cy + y, currentcolor);  // First octant
-      drawPoint(cx + y, cy + x, currentcolor);  // Second octant
-      drawPoint(cx - y, cy + x, currentcolor);  // Third octant
-      drawPoint(cx - x, cy + y, currentcolor);  // Fourth octant
-      drawPoint(cx - x, cy - y, currentcolor);  // Fifth octant
-      drawPoint(cx - y, cy - x, currentcolor);  // Sixth octant
-      drawPoint(cx + y, cy - x, currentcolor);  // Seventh octant
-      drawPoint(cx + x, cy - y, currentcolor);  // Eighth octant
+      drawPoint(cx + x, cy + y, currentcolor);  // 1 octant
+      drawPoint(cx + y, cy + x, currentcolor);  // 2 octant
+      drawPoint(cx - y, cy + x, currentcolor);  // 3 octant
+      drawPoint(cx - x, cy + y, currentcolor);  // 4 octant
+      drawPoint(cx - x, cy - y, currentcolor);  // 5 octant
+      drawPoint(cx - y, cy - x, currentcolor);  // 6 octant
+      drawPoint(cx + y, cy - x, currentcolor);  // 7 octant
+      drawPoint(cx + x, cy - y, currentcolor);  // 8 octant
     
       y++;
   
@@ -64,39 +63,82 @@ public void CGCircle(float cx, float cy, float r,color currentcolor) {
     
 }
 
-public void CGEllipse(float x, float y, float r1, float r2,color currentcolor) {
-    // TODO HW1
-    // You need to implement the "ellipse algorithm" in this section.
-    // You can use the function ellipse(x, y, r1,r2); to verify the correct answer.
-    // However, remember to comment out the function before you submit your homework.
-    // Otherwise, you will receive a score of 0 for this part.
-    // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
-    // coordinates (x, y).
-
+public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor) {
+        float x = 0;
+        float y = r2;
+        float p1 = sq(r2) - sq(r1) * r2 + 0.25 * sq(r1);
     
-    stroke(currentcolor);
-    noFill();
-    ellipse(x,y,r1*2,r2*2);
+        float dx = 2 * sq(r2) * x;
+        float dy = 2 * sq(r1) * y;
     
-
+        // Region 1
+        while (dx < dy) {
+            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor);
+            if (p1 < 0) {
+                x++;
+                dx += 2 * sq(r2);
+                p1 += dx + sq(r2);
+            } else {
+                x++;
+                y--;
+                dx += 2 * sq(r2);
+                dy -= 2 * sq(r1);
+                p1 += dx - dy + sq(r2);
+            }
+        }
+    
+        // Region 2
+        float p2 = sq(r2) * sq(x + 0.5) + sq(r1) * sq(y - 1) - sq(r1) * sq(r2);
+        while (y >= 0) {
+            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor);
+            if (p2 > 0) {
+                y--;
+                dy -= 2 * sq(r1);
+                p2 += sq(r1) - dy;
+            } else {
+                x++;
+                y--;
+                dx += 2 * sq(r2);
+                dy -= 2 * sq(r1);
+                p2 += dx - dy + sq(r1);
+            }
+        }
+    
+    //stroke(currentcolor);
+    //noFill();
+    //ellipse(x,y,r1*2,r2*2);
 }
 
 public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color currentcolor) {
-    // TODO HW1
-    // You need to implement the "bezier curve algorithm" in this section.
-    // You can use the function bezier(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x,
-    // p4.y); to verify the correct answer.
-    // However, remember to comment out before you submit your homework.
-    // Otherwise, you will receive a score of 0 for this part.
-    // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
-    // coordinates (x, y).
+    float t = 0.0;
+    //float step = 0.005;
+    float totalLength = estimateCurveLength(p1, p2, p3, p4);
+    float step = 1.0 / (totalLength *5);
+
+    while (t <= 1.0) {
+        float x = pow(1 - t, 3) * p1.x +
+                  3 * pow(1 - t, 2) * t * p2.x +
+                  3 * (1 - t) * pow(t, 2) * p3.x +
+                  pow(t, 3) * p4.x;
+
+        float y = pow(1 - t, 3) * p1.y +
+                  3 * pow(1 - t, 2) * t * p2.y +
+                  3 * (1 - t) * pow(t, 2) * p3.y +
+                  pow(t, 3) * p4.y;
+
+        drawPoint(x, y, currentcolor);
+
+        t += step;
+    }
 
     
-    stroke(currentcolor);
-    noFill();
-    bezier(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,p4.x,p4.y);
+    //stroke(currentcolor);
+    //noFill();
+    //bezier(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,p4.x,p4.y);
     
 }
+
+
 
 public void CGEraser(Vector3 p1, Vector3 p2) {
     // TODO HW1
@@ -121,4 +163,38 @@ public void drawPoint(float x, float y, color c) {
 public float distance(Vector3 a, Vector3 b) {
     Vector3 c = a.sub(b);
     return sqrt(Vector3.dot(c, c));
+}
+void drawSymmetricEllipsePoints(float xc, float yc, float x, float y,color currentcolor) {
+    drawPoint(xc + x, yc + y, currentcolor);
+    drawPoint(xc - x, yc + y, currentcolor);
+    drawPoint(xc + x, yc - y, currentcolor);
+    drawPoint(xc - x, yc - y, currentcolor);
+}
+
+public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
+    int numSegments = 100;  // 通过分段来估算曲线长度
+    float length = 0.0;
+    float prevX = p1.x;
+    float prevY = p1.y;
+
+    for (int i = 1; i <= numSegments; i++) {
+        float t = i / (float) numSegments;
+
+        float x = pow(1 - t, 3) * p1.x +
+                  3 * pow(1 - t, 2) * t * p2.x +
+                  3 * (1 - t) * pow(t, 2) * p3.x +
+                  pow(t, 3) * p4.x;
+
+        float y = pow(1 - t, 3) * p1.y +
+                  3 * pow(1 - t, 2) * t * p2.y +
+                  3 * (1 - t) * pow(t, 2) * p3.y +
+                  pow(t, 3) * p4.y;
+
+        // 计算相邻点之间的距离并累加
+        length += dist(prevX, prevY, x, y);
+        prevX = x;
+        prevY = y;
+    }
+
+    return length;
 }
