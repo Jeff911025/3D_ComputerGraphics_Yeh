@@ -46,13 +46,15 @@ public void CGCircle(float cx, float cy, float r,color currentcolor) {
       drawPoint(cx + y, cy - x, currentcolor);  // 7 octant
       drawPoint(cx + x, cy - y, currentcolor);  // 8 octant
     
-      y++;
+      
   
       if (decisionOver2 <= 0) {
-        decisionOver2 += 2 * y + 1;  // Change in decision criterion for y -> y + 1
+        decisionOver2 += 2 * y + 3;  // Change in decision criterion for y -> y + 1
+        y++;
       } else {
         x--;
-        decisionOver2 += 2 * (y - x) + 1;  // Change for x -> x - 1 and y -> y + 1
+        y++;
+        decisionOver2 += 2 * (y - x) + 5;  // Change for x -> x - 1 and y -> y + 1
       }
     }
 
