@@ -159,7 +159,7 @@ public class ColorButton extends Button {
         if (selected) {
             stroke(0, 0, 0);
             noFill();
-            rect(pos.x - 2, pos.y - 2, size.x + 4, size.y + 4);
+            rect(pos.x - 1, pos.y - 1, size.x + 1, size.y + 1);
         }
     }
 
@@ -174,5 +174,8 @@ public class ColorButton extends Button {
 
     public color getColor() {
         return btnColor;
+    }
+    public void setColor(color c) {
+        this.btnColor = c;
     }
 }

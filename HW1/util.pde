@@ -1,4 +1,4 @@
-public void CGLine(float x1, float y1, float x2, float y2,color currentcolor) {
+public void CGLine(float x1, float y1, float x2, float y2,color currentcolor, float thickness) {
     int dx = int(abs(x2 - x1));
     int dy = int(abs(y2 - y1));
     int sx = (x1 < x2) ? 1 : -1;
@@ -7,7 +7,7 @@ public void CGLine(float x1, float y1, float x2, float y2,color currentcolor) {
     int e2;
     while(true){
       
-      drawPoint(x1,y1,currentcolor);
+      drawPoint(x1,y1,currentcolor, thickness);
       if (x1 == x2 && y1 == y2) break;
        e2 = 2 * err;
     
@@ -31,20 +31,20 @@ public void CGLine(float x1, float y1, float x2, float y2,color currentcolor) {
     
 }
 
-public void CGCircle(float cx, float cy, float r,color currentcolor) {
+public void CGCircle(float cx, float cy, float r,color currentcolor, float thickness) {
     int x = int(r);
     int y = 0;
     int decisionOver2 = 1 - int(r);   // Decision criterion divided by 2 evaluated at (r, 0)
   
     while (x >= y) {
-      drawPoint(cx + x, cy + y, currentcolor);  // 1 octant
-      drawPoint(cx + y, cy + x, currentcolor);  // 2 octant
-      drawPoint(cx - y, cy + x, currentcolor);  // 3 octant
-      drawPoint(cx - x, cy + y, currentcolor);  // 4 octant
-      drawPoint(cx - x, cy - y, currentcolor);  // 5 octant
-      drawPoint(cx - y, cy - x, currentcolor);  // 6 octant
-      drawPoint(cx + y, cy - x, currentcolor);  // 7 octant
-      drawPoint(cx + x, cy - y, currentcolor);  // 8 octant
+      drawPoint(cx + x, cy + y, currentcolor, thickness);  // 1 octant
+      drawPoint(cx + y, cy + x, currentcolor, thickness);  // 2 octant
+      drawPoint(cx - y, cy + x, currentcolor, thickness);  // 3 octant
+      drawPoint(cx - x, cy + y, currentcolor, thickness);  // 4 octant
+      drawPoint(cx - x, cy - y, currentcolor, thickness);  // 5 octant
+      drawPoint(cx - y, cy - x, currentcolor, thickness);  // 6 octant
+      drawPoint(cx + y, cy - x, currentcolor, thickness);  // 7 octant
+      drawPoint(cx + x, cy - y, currentcolor, thickness);  // 8 octant
     
       
   
@@ -65,7 +65,7 @@ public void CGCircle(float cx, float cy, float r,color currentcolor) {
     
 }
 
-public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor) {
+public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor, float thickness) {
         float x = 0;
         float y = r2;
         float p1 = sq(r2) - sq(r1) * r2 + 0.25 * sq(r1);
@@ -75,7 +75,7 @@ public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor)
     
         // Region 1
         while (dx < dy) {
-            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor);
+            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor, thickness);
             if (p1 < 0) {
                 x++;
                 dx += 2 * sq(r2);
@@ -92,7 +92,7 @@ public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor)
         // Region 2
         float p2 = sq(r2) * sq(x + 0.5) + sq(r1) * sq(y - 1) - sq(r1) * sq(r2);
         while (y >= 0) {
-            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor);
+            drawSymmetricEllipsePoints(xc, yc, x, y,currentcolor, thickness);
             if (p2 > 0) {
                 y--;
                 dy -= 2 * sq(r1);
@@ -111,7 +111,7 @@ public void CGEllipse(float xc, float yc, float r1, float r2,color currentcolor)
     //ellipse(x,y,r1*2,r2*2);
 }
 
-public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color currentcolor) {
+public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color currentcolor, float thickness) {
     float t = 0.0;
     //float step = 0.005;
     float totalLength = estimateCurveLength(p1, p2, p3, p4);
@@ -128,7 +128,7 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color current
                   3 * (1 - t) * pow(t, 2) * p3.y +
                   pow(t, 3) * p4.y;
 
-        drawPoint(x, y, currentcolor);
+        drawPoint(x, y, currentcolor, thickness);
 
         t += step;
     }
@@ -141,40 +141,39 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color current
 }
 
 
-
 public void CGEraser(Vector3 p1, Vector3 p2) {
-    // TODO HW1
-    // You need to erase the scene in the area defined by points p1 and p2 in this
-    // section.
-    // p1 ------
-    // |       |
-    // |       |
-    // ------ p2
-    // The background color is color(250);
-    // You can use the mouse wheel to change the eraser range.
-    // Utilize the function drawPoint(x, y, color) to apply color to the pixel at
-    // coordinates (x, y).
-
+    color eraserColor = color(250); 
+    
+    for (float x = p1.x; x <= p2.x; x++) {
+        for (float y = p1.y; y <= p2.y; y++) {
+            drawPoint(x, y, eraserColor); 
+        }
+    }
 }
 
 public void drawPoint(float x, float y, color c) {
+    drawPoint(x, y, c, 10);
+}
+public void drawPoint(float x, float y, color c, float thickness) {
     stroke(c);
+    strokeWeight(thickness);
     point(x, y);
+    strokeWeight(1);
 }
 
 public float distance(Vector3 a, Vector3 b) {
     Vector3 c = a.sub(b);
     return sqrt(Vector3.dot(c, c));
 }
-void drawSymmetricEllipsePoints(float xc, float yc, float x, float y,color currentcolor) {
-    drawPoint(xc + x, yc + y, currentcolor);
-    drawPoint(xc - x, yc + y, currentcolor);
-    drawPoint(xc + x, yc - y, currentcolor);
-    drawPoint(xc - x, yc - y, currentcolor);
+void drawSymmetricEllipsePoints(float xc, float yc, float x, float y,color currentcolor, float thickness) {
+    drawPoint(xc + x, yc + y, currentcolor, thickness);
+    drawPoint(xc - x, yc + y, currentcolor, thickness);
+    drawPoint(xc + x, yc - y, currentcolor, thickness);
+    drawPoint(xc - x, yc - y, currentcolor, thickness);
 }
 
 public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
-    int numSegments = 100;  // 通过分段来估算曲线长度
+    int numSegments = 100;
     float length = 0.0;
     float prevX = p1.x;
     float prevY = p1.y;
@@ -192,7 +191,6 @@ public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)
                   3 * (1 - t) * pow(t, 2) * p3.y +
                   pow(t, 3) * p4.y;
 
-        // 计算相邻点之间的距离并累加
         length += dist(prevX, prevY, x, y);
         prevX = x;
         prevY = y;
