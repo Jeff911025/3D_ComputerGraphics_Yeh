@@ -177,9 +177,10 @@ class CurveRenderer_stand implements Renderer{
 Originally if we specified 3 control point and right click the mouse, it default to cancel drawing. I modified it and now both kind of beizer curver tool support draw curve with only 3 points, just right click the mouse when you've choosed 3 control points. The modification is also shown above.
 
 ## util.estimateCurveLength()
-![image](https://github.com/user-attachments/assets/bab3eea0-77b1-485d-a5d9-9c00ea459af6)
-![image](https://github.com/user-attachments/assets/e68dfbf8-cabf-4c5e-9563-bbbdf95e232e)
-
+<p>
+    <img src="https://github.com/user-attachments/assets/bab3eea0-77b1-485d-a5d9-9c00ea459af6" alt="example" width="40%">
+    <img src="https://github.com/user-attachments/assets/e68dfbf8-cabf-4c5e-9563-bbbdf95e232e" alt="example" width="40%">
+</p>
 A fix size of step will make the curve looks disconnected. This function can estimate the length of the curve, dynamically adjust the step, make the curve looks more continuous.
 ```
 public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
@@ -204,3 +205,21 @@ public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)
     return length;
 }
 ```
+
+### Assistance of LLMs
+
+I asked ChatGPT for some java syntax, for example in python we can set default args
+```
+def drawPoint(x, y, c, thickness = 1):
+```
+but in java 
+```
+public void drawPoint(float x, float y, color c) {
+    drawPoint(x, y, c, 1);
+}
+public void drawPoint(float x, float y, color c, float thickness) {
+                                    .
+                                    .
+                                    .
+```
+The util.estimateCurveLength() is done by LLM as well. The other functions I also chat with them, conveying my idea, and ask them when I'm faced with bugs.
