@@ -64,10 +64,12 @@ public void draw() {
     clearButton.run(() -> {
         shapeRenderer.clear();
     });
+    
     shapeRenderer.box.show();
+    shapeRenderer.run();
     drawPoint(mouseX, mouseY, currentColor, thickness);
 
-    shapeRenderer.run();
+    
 
 }
 
@@ -279,7 +281,7 @@ void mouseWheel(MouseEvent event) {
         eraserSize += 1;
     else if (e > 0)
         eraserSize -= 1;
-    eraserSize = max(min(eraserSize, 100), 4);
+    eraserSize = max(min(eraserSize, 50), 4);
 }
 
 boolean overRect(int x, int y, int width, int height) {
@@ -324,10 +326,12 @@ void addSelectedColor() {
 void drawSlider() {
     // Draw slider track
     fill(200);
+    stroke(0);
     rect(sliderX, sliderY, sliderW, sliderH);
     
     // Draw slider handle
     fill(150);
+    stroke(0);
     ellipse(sliderHandleX, sliderY + sliderH / 2, sliderH, sliderH);  // Make the handle circular
     
     // Update thickness based on slider position

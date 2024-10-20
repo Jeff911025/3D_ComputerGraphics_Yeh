@@ -159,7 +159,9 @@ public class ColorButton extends Button {
         if (selected) {
             stroke(0, 0, 0);
             noFill();
+            strokeWeight(2);
             rect(pos.x - 1, pos.y - 1, size.x + 1, size.y + 1);
+            strokeWeight(1);
         }
     }
 

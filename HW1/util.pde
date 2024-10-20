@@ -143,16 +143,53 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color current
 
 public void CGEraser(Vector3 p1, Vector3 p2) {
     color eraserColor = color(250); 
+    //loop is too slow
+    //for (float x = p1.x; x <= p2.x; x++) {
+    //    for (float y = p1.y; y <= p2.y; y++) {
+    //        drawPoint(x, y, eraserColor, 1); 
+    //    }
+    //}
     
-    for (float x = p1.x; x <= p2.x; x++) {
-        for (float y = p1.y; y <= p2.y; y++) {
-            drawPoint(x, y, eraserColor); 
-        }
+    
+    //can't use rect()
+    //stroke(eraserColor);
+    //fill(eraserColor);
+    //rect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+    
+    
+    //not very precise
+    //float stepSize = 5;
+    //for (float y = p1.y; y <= p2.y; y += stepSize) {
+    //    CGLine(p1.x, y, p2.x, y, eraserColor, stepSize);  // Erase by drawing a horizontal line
+    //}
+    
+    drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
+    
+    
+}
+
+public void drawRect(float x, float y, float w, float h, boolean fillRect, color c) {
+    
+    if (fillRect) {
+        stroke(c);
+        beginShape();
+        vertex(x, y);
+        vertex(x + w, y);
+        vertex(x + w, y + h);
+        vertex(x, y + h);
+        endShape(CLOSE);
+        stroke(currentColor);
     }
+    
+    
+    //line(x, y, x + w, y);
+    //line(x + w, y, x + w, y + h);
+    //line(x + w, y + h, x, y + h);
+    //line(x, y + h, x, y);
 }
 
 public void drawPoint(float x, float y, color c) {
-    drawPoint(x, y, c, 10);
+    drawPoint(x, y, c, 1);
 }
 public void drawPoint(float x, float y, color c, float thickness) {
     stroke(c);
