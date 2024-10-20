@@ -144,11 +144,11 @@ public void CGCurve(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4,color current
 public void CGEraser(Vector3 p1, Vector3 p2) {
     color eraserColor = color(250); 
     //loop is too slow
-    //for (float x = p1.x; x <= p2.x; x++) {
-    //    for (float y = p1.y; y <= p2.y; y++) {
-    //        drawPoint(x, y, eraserColor, 1); 
-    //    }
-    //}
+    for (float x = p1.x; x <= p2.x; x++) {
+        for (float y = p1.y; y <= p2.y; y++) {
+            drawPoint(x, y, eraserColor, 1); 
+        }
+    }
     
     
     //can't use rect()
@@ -163,7 +163,8 @@ public void CGEraser(Vector3 p1, Vector3 p2) {
     //    CGLine(p1.x, y, p2.x, y, eraserColor, stepSize);  // Erase by drawing a horizontal line
     //}
     
-    drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
+    // vertex also prohibit
+    //drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
     
     
 }
