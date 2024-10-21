@@ -261,7 +261,7 @@ class EraserRenderer implements Renderer{
 ```
 In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button. If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. 
 
-But I have no time to try it >_< I have to make deadline with for other homework. 
+But I have no time to try it >_< I have to make deadline with other homework. 
 
 Using drawRect function (implemented using vertex) can also ease the lag.
 ```java
