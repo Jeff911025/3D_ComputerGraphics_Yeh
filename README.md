@@ -24,7 +24,7 @@
 ![image](https://github.com/user-attachments/assets/21c3aac5-29ab-43cf-b3b2-780558b9a666)
 
 Use ControlP5 library for palette GUI, the selected color will be appened to the grid. When it's full, the first(oldest) color in the grid will be replaced.
-```java
+```processing
 void addSelectedColor() {
     color selectedColor = cp5.get(ColorWheel.class, "colorPicker").getRGB();
     if(color_idx < total_palette_num){
@@ -42,7 +42,7 @@ void addSelectedColor() {
     }
 }
 ```
-```java
+```processing
 public void draw() {
               .
               .
@@ -69,7 +69,7 @@ public void draw() {
 ![image](https://github.com/user-attachments/assets/2b7de75c-b214-4b73-b36e-59747873bece)
 
 Use built-in function to draw the toggle bar.
-```
+```processing
 void drawSlider() {
     // Draw slider track
     fill(200);
@@ -101,7 +101,7 @@ void mouseDragged() {
 }
 ```
 Make users preview the thickness, shown at the mouse pointer.
-```java
+```processing
 public void draw() {
               .
               .
@@ -185,7 +185,7 @@ Originally if we specified 3 control point and right click the mouse, it default
 </p>
 A fix size of step will make the curve looks disconnected. This function can estimate the length of the curve, dynamically adjust the step, make the curve looks more continuous.
 
-```java
+```processing
 public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     int numSegments = 100;
     float length = 0.0;
@@ -219,7 +219,7 @@ def drawPoint(x, y, c, thickness = 1):
 
 but in java 
 
-```java
+```processing
 public void drawPoint(float x, float y, color c) {
     drawPoint(x, y, c, 1);
 }
@@ -262,7 +262,7 @@ class EraserRenderer implements Renderer{
 In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button (even if they didn't move the mouse). If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. 
 
 Using drawRect function (implemented using vertex) can also ease the lag.
-```java
+```processing
 public void CGEraser(Vector3 p1, Vector3 p2) {
     color eraserColor = color(250); 
     //loop is too slow
