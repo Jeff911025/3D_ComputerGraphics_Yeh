@@ -22,6 +22,7 @@
 # Complementation
 ## Color palette
 ![image](https://github.com/user-attachments/assets/21c3aac5-29ab-43cf-b3b2-780558b9a666)
+
 Use ControlP5 library for palette GUI, the selected color will be appened to the grid. When it's full, the first(oldest) color in the grid will be replaced.
 ```java
 void addSelectedColor() {
