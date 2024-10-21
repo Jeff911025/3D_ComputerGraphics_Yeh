@@ -248,20 +248,59 @@ class EraserRenderer implements Renderer{
     public void setColor(color c) {
         currentColor = c;  
     }
+  //@Override
+  //public void render(){
+  //    if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
+  //   // loadPixels();
+  //    noFill();
+  //    stroke(0);
+  //    rect(mouseX - eraserSize/2,mouseY - eraserSize/2,eraserSize,eraserSize);
+  //    if(mousePressed&& mouseButton == LEFT){
+  //        shapeRenderer.addShape(new EraseArea(new Vector3(mouseX - eraserSize/2,mouseY - eraserSize/2,0),new Vector3(mouseX + eraserSize/2,mouseY + eraserSize/2,0)));
+          
+  //    }     
+  //}
+  
+  private ArrayList<Vector3> points = new ArrayList<Vector3>();
+  private boolean once;
+  private int prex = -1;
+  private int prey = -1;
   @Override
   public void render(){
-      if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
-     // loadPixels();
-      noFill();
-      stroke(0);
-      rect(mouseX - eraserSize/2,mouseY - eraserSize/2,eraserSize,eraserSize);
-      if(mousePressed&& mouseButton == LEFT){
-          shapeRenderer.addShape(new EraseArea(new Vector3(mouseX - eraserSize/2,mouseY - eraserSize/2,0),new Vector3(mouseX + eraserSize/2,mouseY + eraserSize/2,0)));
-          
-      }
-      //updatePixels();
-     
-  }
+        if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
+        noFill();
+        stroke(0);
+        rect(mouseX - eraserSize/2,mouseY - eraserSize/2,eraserSize,eraserSize);
+        
+        if(mousePressed){
+          if(mouseX!=prex & mouseY!=prey){
+            once = false;
+              points.add(new Vector3(mouseX,mouseY,0));
+              for (int i = (int)(mouseX - eraserSize / 2); i < (int)(mouseX + eraserSize / 2); i++) {
+                for (int j = (int)(mouseY - eraserSize / 2); j < (int)(mouseY + eraserSize / 2); j++) {
+                  points.add(new Vector3(i, j, 0));    
+                }       
+              }
+              prex = mouseX;
+              prey = mouseY;
+          }
+        }else{
+            if(!once){
+                once = true;
+                shapeRenderer.addShape(new Point(points, color(250), 1)); 
+                println("Added a Shape with ",points.size() ,"points to shapeRenderer");
+                points = new ArrayList<Vector3>();
+            }
+        }
+        if(points.size()<=1) return;  
+        //for(int i=0;i<points.size();i++){
+        //    Vector3 p1 = points.get(i);
+        //    //Vector3 p2 = points.get(i+1);
+        //    drawPoint(p1.x,p1.y,color(250));
+        //    //CGLine(p1.x,p1.y,p2.x,p2.y,color(250), 1);
+        //}
+        
+    }
 
 }
 
