@@ -259,9 +259,7 @@ class EraserRenderer implements Renderer{
   }
 }
 ```
-In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button. If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. 
-
-But I have no time to try it >_< I have to make deadline with other homework. 
+In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button (even if they didn't move the mouse). If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. 
 
 Using drawRect function (implemented using vertex) can also ease the lag.
 ```java
@@ -278,3 +276,57 @@ public void CGEraser(Vector3 p1, Vector3 p2) {
     drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
 }
 ```
+
+10/21 19:37 update
+I tried to make rew render function in EraserRender
+```java
+                .
+                .
+                .
+private ArrayList<Vector3> points = new ArrayList<Vector3>();
+private boolean once;
+private int prex = -1;
+private int prey = -1;
+@Override
+public void render(){
+        if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
+        noFill();
+        stroke(0);
+        rect(mouseX - eraserSize/2,mouseY - eraserSize/2,eraserSize,eraserSize);
+        
+        if(mousePressed){
+          if(mouseX!=prex & mouseY!=prey){
+            once = false;
+              points.add(new Vector3(mouseX,mouseY,0));
+              for (int i = (int)(mouseX - eraserSize / 2); i < (int)(mouseX + eraserSize / 2); i++) {
+                for (int j = (int)(mouseY - eraserSize / 2); j < (int)(mouseY + eraserSize / 2); j++) {
+                  points.add(new Vector3(i, j, 0));    
+                }       
+              }
+              prex = mouseX;
+              prey = mouseY;
+          }
+        }else{
+            if(!once){
+                once = true;
+                shapeRenderer.addShape(new Point(points, color(250), 1)); 
+                println("Added a Shape with ",points.size() ,"points to shapeRenderer");
+                points = new ArrayList<Vector3>();
+            }
+        }
+        if(points.size()<=1) return;  
+        //for(int i=0;i<points.size();i++){
+        //    Vector3 p1 = points.get(i);
+        //    //Vector3 p2 = points.get(i+1);
+        //    drawPoint(p1.x,p1.y,color(250));
+        //    //CGLine(p1.x,p1.y,p2.x,p2.y,color(250), 1);
+        //} 
+    }
+}
+```
+In this modification, only when users click mouse button and release will make a new Point shape. I remember to check that mouse movement. If the mouse didn't move, no new point will be added. This indeed works, but if the pointer moves for any pixel, the number of points explodes. Shown in figure below.
+![image](https://github.com/user-attachments/assets/fac63e7c-4558-4e4f-a75f-8e89e83b41e9)
+
+If I press mouse and remain same position, only 50x50 points added, this is very good. But when I move slightly, it becomes 50x50x11, since it detects 11 times of movements. But most of them are the same coordinate, I think the better algorithm is needed for this issue.
+
+I comment out this modification, just comment out original render function.
