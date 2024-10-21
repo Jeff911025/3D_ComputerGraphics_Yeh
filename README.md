@@ -278,7 +278,7 @@ public void CGEraser(Vector3 p1, Vector3 p2) {
 ```
 
 10/21 19:37 update
-I tried to make rew render function in EraserRender
+I tried to make rew render function in EraserRender, this makes CGEraser useless.
 ```java
                 .
                 .
