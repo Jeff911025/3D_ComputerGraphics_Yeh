@@ -151,17 +151,17 @@ public void CGEraser(Vector3 p1, Vector3 p2) {
     }
     
     
-    //can't use rect()
-    //stroke(eraserColor);
-    //fill(eraserColor);
-    //rect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
-    
-    
     //not very precise
     //float stepSize = 5;
     //for (float y = p1.y; y <= p2.y; y += stepSize) {
     //    CGLine(p1.x, y, p2.x, y, eraserColor, stepSize);  // Erase by drawing a horizontal line
     //}
+    
+    //can't use rect()
+    //stroke(eraserColor);
+    //fill(eraserColor);
+    //rect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+      
     
     // vertex also prohibit
     //drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
@@ -181,12 +181,6 @@ public void drawRect(float x, float y, float w, float h, boolean fillRect, color
         endShape(CLOSE);
         stroke(currentColor);
     }
-    
-    
-    //line(x, y, x + w, y);
-    //line(x + w, y, x + w, y + h);
-    //line(x + w, y + h, x, y + h);
-    //line(x, y + h, x, y);
 }
 
 public void drawPoint(float x, float y, color c) {
