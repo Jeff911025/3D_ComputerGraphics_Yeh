@@ -100,7 +100,7 @@ void mouseDragged() {
 }
 ```
 Make users preview the thickness, shown at the mouse pointer.
-```
+```java
 public void draw() {
               .
               .
@@ -114,7 +114,8 @@ public void draw() {
 ![image](https://github.com/user-attachments/assets/c89559eb-66fa-4a0f-a2b4-8185f50a5a35)
 
 The order in TA provided code and GIF is (p1, p4, p2, p2), that is, first point we choose is p1, and the second point will be p4. I add another Render named CurveRenderer_stand, which order is (p1, p2, p3, p4), this can easier control the curve shape.
-```
+
+```java
 class CurveRenderer_stand implements Renderer{
   private boolean once;
   private int times;
@@ -182,7 +183,8 @@ Originally if we specified 3 control point and right click the mouse, it default
     <img src="https://github.com/user-attachments/assets/e68dfbf8-cabf-4c5e-9563-bbbdf95e232e" alt="example" width="40%">
 </p>
 A fix size of step will make the curve looks disconnected. This function can estimate the length of the curve, dynamically adjust the step, make the curve looks more continuous.
-```
+
+```java
 public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     int numSegments = 100;
     float length = 0.0;
@@ -209,11 +211,14 @@ public float estimateCurveLength(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)
 ### Assistance of LLMs
 
 I asked ChatGPT for some java syntax, for example in python we can set default args
-```
+
+```python
 def drawPoint(x, y, c, thickness = 1):
 ```
+
 but in java 
-```
+
+```java
 public void drawPoint(float x, float y, color c) {
     drawPoint(x, y, c, 1);
 }
