@@ -229,3 +229,34 @@ public void drawPoint(float x, float y, color c, float thickness) {
                                     .
 ```
 The util.estimateCurveLength() is done by LLM as well. The other functions I also chat with them, conveying my idea, and ask them when I'm faced with bugs.
+
+### Other changes and observation
+
+# Eraser size
+
+The eraser size range is (10,50) now. 
+
+# Lag issue
+
+It becomes lag if ShapeRenderer save too many shapes, especially when using erasers.
+
+```java
+class EraserRenderer implements Renderer{
+  private color currentColor;
+  @Override
+    public void setColor(color c) {
+        currentColor = c;  
+    }
+  @Override
+  public void render(){
+      if(!shapeRenderer.checkInBox(new Vector3(mouseX,mouseY,0))) return;
+      noFill();
+      stroke(0);
+      rect(mouseX - eraserSize/2,mouseY - eraserSize/2,eraserSize,eraserSize);
+      if(mousePressed&& mouseButton == LEFT){
+          shapeRenderer.addShape(new EraseArea(new Vector3(mouseX - eraserSize/2,mouseY - eraserSize/2,0),new Vector3(mouseX + eraserSize/2,mouseY + eraserSize/2,0)));
+      }
+  }
+}
+```
+In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button. If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. But I have no time to try it >_< I have to make deadline with for other homework. 
