@@ -259,4 +259,22 @@ class EraserRenderer implements Renderer{
   }
 }
 ```
-In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button. If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. But I have no time to try it >_< I have to make deadline with for other homework. 
+In my opinion, the issue is caused since the EraseArea is being continusly added to shapeRenderer if users keep clicking LEFT button. If the EraserRenderer should act as PencilRenderer, only when button was released will the shape added to shapeRenderer, this problem may be solved. 
+
+But I have no time to try it >_< I have to make deadline with other homework. 
+
+Using drawRect function (implemented using vertex) can also ease the lag.
+```java
+public void CGEraser(Vector3 p1, Vector3 p2) {
+    color eraserColor = color(250); 
+    //loop is too slow
+    //for (float x = p1.x; x <= p2.x; x++) {
+    //    for (float y = p1.y; y <= p2.y; y++) {
+    //        drawPoint(x, y, eraserColor, 1); 
+    //    }
+    //}
+    
+    // vertex also prohibit
+    drawRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,true, eraserColor);
+}
+```
