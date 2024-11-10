@@ -97,8 +97,10 @@ public Vector3[] findBoundBox(Vector3[] v) {
     }    
 
 
-    Vector3 recordminV = new Vector3(0);
-    Vector3 recordmaxV = new Vector3(999);
+    //Vector3 recordminV = new Vector3(0);
+    //Vector3 recordmaxV = new Vector3(999);
+    Vector3 recordminV = new Vector3(minX, minY, 0);
+    Vector3 recordmaxV = new Vector3(maxX, maxY, 0);
     Vector3[] result = { recordminV, recordmaxV };
     return result;
 

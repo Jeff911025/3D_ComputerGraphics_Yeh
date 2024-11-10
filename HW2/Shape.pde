@@ -22,7 +22,7 @@ public class Shape{
         for(int i = int(minmax[0].x);i<=minmax[1].x;i++){
             for(int j = int(minmax[0].y);j<=minmax[1].y;j++){
                 if(pnpoly(i,j,t_pos)){                    
-                    drawPoint(i,j,color(100));
+                    drawPoint(i,j,color(52,108,156));
                 }
             }
         }
