@@ -93,7 +93,7 @@ public class Inspector {
         gameObject = go;
         for (int i = 0; i < position_slider.length; i++) {
             position_slider[i] = new Slider(box.pos.add(new Vector3(40, 30 + i * 20, 0)),
-                    new Vector3(box.pos.x + 40, box.pos.x + 150, 0), new Vector3(-1, 1, 0), true);
+                    new Vector3(box.pos.x + 40, box.pos.x + 150, 0), new Vector3(-50, 50, 0), true);
         }
         position_slider[0].setValue(gameObject.transform.position.x);
         position_slider[1].setValue(gameObject.transform.position.y);
