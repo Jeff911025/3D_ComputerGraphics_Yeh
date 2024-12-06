@@ -40,38 +40,38 @@ boolean pnpoly(float x, float y, Vector3[] vertexes) {
 public Vector3[] findBoundBox(Vector3[] v) {    
     // TODO HW2
     // You need to find the bounding box of the vertexes v.
-    //Vector3 recordminV = new Vector3(1.0 / 0.0);
-    //Vector3 recordmaxV = new Vector3(-1.0 / 0.0);
-    //Vector3[] result = { recordminV, recordmaxV };
-    //return result;
-    
-    float minX = Float.MAX_VALUE;
-    float minY = Float.MAX_VALUE;
-    float maxX = Float.MIN_VALUE;
-    float maxY = Float.MIN_VALUE;
-
-    for (Vector3 vertex : v) {
-        if (vertex.x < minX) minX = vertex.x;
-        if (vertex.y < minY) minY = vertex.y;
-        if (vertex.x > maxX) maxX = vertex.x;
-        if (vertex.y > maxY) maxY = vertex.y;
-    }    
-
-
-    Vector3 recordminV = new Vector3(minX, minY, 0);
-    Vector3 recordmaxV = new Vector3(maxX, maxY, 0);
+    Vector3 recordminV = new Vector3(1.0 / 0.0);
+    Vector3 recordmaxV = new Vector3(-1.0 / 0.0);
     Vector3[] result = { recordminV, recordmaxV };
     return result;
+    
+    //float minX = Float.MAX_VALUE;
+    //float minY = Float.MAX_VALUE;
+    //float maxX = Float.MIN_VALUE;
+    //float maxY = Float.MIN_VALUE;
+
+    //for (Vector3 vertex : v) {
+    //    if (vertex.x < minX) minX = vertex.x;
+    //    if (vertex.y < minY) minY = vertex.y;
+    //    if (vertex.x > maxX) maxX = vertex.x;
+    //    if (vertex.y > maxY) maxY = vertex.y;
+    //}    
+
+
+    //Vector3 recordminV = new Vector3(minX, minY, 0);
+    //Vector3 recordmaxV = new Vector3(maxX, maxY, 0);
+    //Vector3[] result = { recordminV, recordmaxV };
+    //return result;
     
     
 }
 
 public Vector3[] Sutherland_Hodgman_algorithm(Vector3[] points, Vector3[] boundary) {
-    //ArrayList<Vector3> input = new ArrayList<Vector3>();
-    //ArrayList<Vector3> output = new ArrayList<Vector3>();
-    //for (int i = 0; i < points.length; i += 1) {
-    //    input.add(points[i]);
-    //}
+    ArrayList<Vector3> input = new ArrayList<Vector3>();
+    ArrayList<Vector3> output = new ArrayList<Vector3>();
+    for (int i = 0; i < points.length; i += 1) {
+        input.add(points[i]);
+    }
 
     //// TODO HW2
     //// You need to implement the Sutherland Hodgman Algorithm in this section.
@@ -79,57 +79,59 @@ public Vector3[] Sutherland_Hodgman_algorithm(Vector3[] points, Vector3[] bounda
     //// And the other is the vertexes of the "boundary".
     //// The output is the vertexes of the polygon.
 
-    //output = input;
+    output = input;
 
-    //Vector3[] result = new Vector3[output.size()];
-    //for (int i = 0; i < result.length; i += 1) {
-    //    result[i] = output.get(i);
+    Vector3[] result = new Vector3[output.size()];
+    for (int i = 0; i < result.length; i += 1) {
+        result[i] = output.get(i);
+    }
+    return result;
+    
+    
+    //ArrayList<Vector3> input = new ArrayList<Vector3>();
+    
+    //for (int i = 0; i < points.length; i += 1) {
+    //    input.add(points[i]);
     //}
-    //return result;
-    ArrayList<Vector3> input = new ArrayList<Vector3>();
-    
-    for (int i = 0; i < points.length; i += 1) {
-        input.add(points[i]);
-    }
-    for (int i = 0; i < boundary.length; i++) {
-       Vector3 a = boundary[i];
-       Vector3 b = boundary[(i + 1) % boundary.length];
-       ArrayList<Vector3> output = new ArrayList<Vector3>();
-       for (int j = 0; j < input.size(); j++) {
-           Vector3 current = input.get(j);
-           Vector3 next = input.get((j + 1) % input.size());
+    //for (int i = 0; i < boundary.length; i++) {
+    //   Vector3 a = boundary[i];
+    //   Vector3 b = boundary[(i + 1) % boundary.length];
+    //   ArrayList<Vector3> output = new ArrayList<Vector3>();
+    //   for (int j = 0; j < input.size(); j++) {
+    //       Vector3 current = input.get(j);
+    //       Vector3 next = input.get((j + 1) % input.size());
   
-           boolean currentInside = isInside(current, a, b);
-           boolean nextInside = isInside(next, a, b);
+    //       boolean currentInside = isInside(current, a, b);
+    //       boolean nextInside = isInside(next, a, b);
            
-           if (currentInside && nextInside) {
-                output.add(next);
-                //println("add:",next);
-            } else if (currentInside && !nextInside) {
-              println("in to out");
-                output.add(intersect(current, next, a, b));
-                println("add:",intersect(current, next, a, b));
-            } else if (!currentInside && nextInside) {
-                println("out to in");
+    //       if (currentInside && nextInside) {
+    //            output.add(next);
+    //            //println("add:",next);
+    //        } else if (currentInside && !nextInside) {
+    //          println("in to out");
+    //            output.add(intersect(current, next, a, b));
+    //            println("add:",intersect(current, next, a, b));
+    //        } else if (!currentInside && nextInside) {
+    //            println("out to in");
                 
-                output.add(intersect(current, next, a, b));
-                output.add(next);
-                println("add:",intersect(current, next, a, b));
-                println("add:",next);
-            }
-        }
+    //            output.add(intersect(current, next, a, b));
+    //            output.add(next);
+    //            println("add:",intersect(current, next, a, b));
+    //            println("add:",next);
+    //        }
+    //    }
             
-      input = new ArrayList<Vector3>(output);
-    }
+    //  input = new ArrayList<Vector3>(output);
+    //}
     
-    //output = input;
-    println(input.size());
-    Vector3[] result = new Vector3[input.size()];
-    for (int i = 0; i < input.size(); i++) {
-        result[i] = input.get(i);
-    }
+    ////output = input;
+    //println(input.size());
+    //Vector3[] result = new Vector3[input.size()];
+    //for (int i = 0; i < input.size(); i++) {
+    //    result[i] = input.get(i);
+    //}
 
-    return result;   
+    //return result;   
 }
 
 private boolean isInside(Vector3 p, Vector3 a, Vector3 b) {
@@ -173,23 +175,23 @@ public float getDepth(float x, float y, Vector3[] vertex) {
     // TODO HW3
     // You need to calculate the depth (z) in the triangle (vertex) based on the
     // positions x and y. and return the z value;
-    //return 0.0;
+    return 0.0;
 
-    Vector3 v1 = vertex[0];
-    Vector3 v2 = vertex[1];
-    Vector3 v3 = vertex[2];
-
-
-    float totalArea = triangleArea(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
+    //Vector3 v1 = vertex[0];
+    //Vector3 v2 = vertex[1];
+    //Vector3 v3 = vertex[2];
 
 
-    float lambda1 = triangleArea(x, y, v2.x, v2.y, v3.x, v3.y) / totalArea;
-    float lambda2 = triangleArea(v1.x, v1.y, x, y, v3.x, v3.y) / totalArea;
-    float lambda3 = triangleArea(v1.x, v1.y, v2.x, v2.y, x, y) / totalArea;
+    //float totalArea = triangleArea(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
 
 
-    float z = lambda1 * v1.z + lambda2 * v2.z + lambda3 * v3.z;
-    return z;
+    //float lambda1 = triangleArea(x, y, v2.x, v2.y, v3.x, v3.y) / totalArea;
+    //float lambda2 = triangleArea(v1.x, v1.y, x, y, v3.x, v3.y) / totalArea;
+    //float lambda3 = triangleArea(v1.x, v1.y, v2.x, v2.y, x, y) / totalArea;
+
+
+    //float z = lambda1 * v1.z + lambda2 * v2.z + lambda3 * v3.z;
+    //return z;
     
 }
 

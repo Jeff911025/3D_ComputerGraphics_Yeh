@@ -89,7 +89,7 @@ void cameraControl(){
             cam_position.y -= moveSpeed;  // 相机向右平移
             
         }
-        println(cam_position.x,cam_position.y,cam_position.z);
+        //println(cam_position.x,cam_position.y,cam_position.z);
     }
 
     // 鼠标控制：控制相机的旋转

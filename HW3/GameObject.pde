@@ -64,98 +64,157 @@ public class GameObject {
 
     void update() {
     }
-
     void debugDraw() {
-        //Matrix4 MVP = main_camera.Matrix().mult(localToWorld());
-        //for (int i = 0; i < mesh.triangles.size(); i++) {
-        //    Triangle triangle = mesh.triangles.get(i);
-        //    Vector3[] img_pos = new Vector3[3];
-        //    for (int j = 0; j < 3; j++) {
-        //        img_pos[j] = MVP.mult(triangle.verts[j].getVector4(1.0)).homogenized();
-        //    }
+    Matrix4 MVP = main_camera.Matrix().mult(localToWorld());
 
-        //    for (int j = 0; j < img_pos.length; j++) {
-        //        img_pos[j] = new Vector3(map(img_pos[j].x, -1, 1, renderer_size.x, renderer_size.z),
-        //                map(img_pos[j].y, -1, 1, renderer_size.y, renderer_size.w), img_pos[j].z);
-        //    }
+    for (int i = 0; i < mesh.triangles.size(); i++) {
+        Triangle triangle = mesh.triangles.get(i);
+        Vector3[] img_pos = new Vector3[3];
 
-        //    CGLine(img_pos[0].x, img_pos[0].y, img_pos[1].x, img_pos[1].y);
-        //    CGLine(img_pos[1].x, img_pos[1].y, img_pos[2].x, img_pos[2].y);
-        //    CGLine(img_pos[2].x, img_pos[2].y, img_pos[0].x, img_pos[0].y);
-        //}
+        // Transform the vertices from world space to screen space
+        for (int j = 0; j < 3; j++) {
+            img_pos[j] = MVP.mult(triangle.verts[j].getVector4(1.0)).homogenized();
+        }
+
+        Vector3 v1 = img_pos[0];
+        Vector3 v2 = img_pos[1];
+        Vector3 v3 = img_pos[2];
+
+        // Calculate edges and the normal
+        Vector3 v1_v2 = Vector3.sub(v2, v1);
+        Vector3 v1_v3 = Vector3.sub(v3, v1);
+
+        Vector3 normal = Vector3.cross(v1_v2, v1_v3);
+        normal.normalize();
         
-        
-         Matrix4 MVP = main_camera.Matrix().mult(localToWorld());
-      
-         for (int i = 0; i < mesh.triangles.size(); i++) {
-            Triangle triangle = mesh.triangles.get(i);
-            Vector3[] img_pos = new Vector3[3];
-            
-            for (int j = 0; j < 3; j++) {
-                img_pos[j] = MVP.mult(triangle.verts[j].getVector4(1.0)).homogenized();
+        // Calculate the center of the triangle
+        Vector3 triangleCenter = new Vector3(
+            (v1.x + v2.x + v3.x) / 3.0f,
+            (v1.y + v2.y + v3.y) / 3.0f,
+            (v1.z + v2.z + v3.z) / 3.0f
+        );
+
+        // Calculate the view direction from the camera to the triangle center
+        Vector3 viewDir = cam_position.sub(triangleCenter);
+        viewDir.normalize();
+        normal.normalize();
+
+        // Perform backface culling (skip if the normal is facing away)
+        float dotProduct = Vector3.dot(normal, viewDir);
+        if (dotProduct < 0) {
+            continue;
+        }
+        float render_width = renderer_size.z - renderer_size.x;
+        float render_height = renderer_size.w - renderer_size.y;
+        // Project the 3D points to screen space
+        for (int j = 0; j < img_pos.length; j++) {
+            img_pos[j] = new Vector3(
+                (img_pos[j].x + 1) * 0.5f * render_width,  // Map x from [-1, 1] to [0, width]
+                (1 - img_pos[j].y) * 0.5f * render_height, // Map y from [-1, 1] to [0, height]
+                img_pos[j].z
+            );
+
+            int screenIndex = int(img_pos[j].x) + int(img_pos[j].y) * (int)render_width;
+            if (screenIndex >= 0 && screenIndex < GH_DEPTH.length) {
+                // Depth buffer logic
+                if (img_pos[j].z < GH_DEPTH[screenIndex]) {
+                    GH_DEPTH[screenIndex] = img_pos[j].z;
+                    renderBuffer.pixels[screenIndex] = color(255 * img_pos[j].z);  // Adjust color by depth
+                }
             }
+        }
+
+        // Draw the edges of the triangle
+        CGLine(img_pos[0].x, img_pos[0].y, img_pos[1].x, img_pos[1].y);
+        CGLine(img_pos[1].x, img_pos[1].y, img_pos[2].x, img_pos[2].y);
+        CGLine(img_pos[2].x, img_pos[2].y, img_pos[0].x, img_pos[0].y);
+    }
+}
+
+    //void debugDraw() {
+    //    //Matrix4 MVP = main_camera.Matrix().mult(localToWorld());
+    //    //for (int i = 0; i < mesh.triangles.size(); i++) {
+    //    //    Triangle triangle = mesh.triangles.get(i);
+    //    //    Vector3[] img_pos = new Vector3[3];
+    //    //    for (int j = 0; j < 3; j++) {
+    //    //        img_pos[j] = MVP.mult(triangle.verts[j].getVector4(1.0)).homogenized();
+    //    //    }
+
+    //    //    for (int j = 0; j < img_pos.length; j++) {
+    //    //        img_pos[j] = new Vector3(map(img_pos[j].x, -1, 1, renderer_size.x, renderer_size.z),
+    //    //                map(img_pos[j].y, -1, 1, renderer_size.y, renderer_size.w), img_pos[j].z);
+    //    //    }
+
+    //    //    CGLine(img_pos[0].x, img_pos[0].y, img_pos[1].x, img_pos[1].y);
+    //    //    CGLine(img_pos[1].x, img_pos[1].y, img_pos[2].x, img_pos[2].y);
+    //    //    CGLine(img_pos[2].x, img_pos[2].y, img_pos[0].x, img_pos[0].y);
+    //    //}
+        
+        
+    //     Matrix4 MVP = main_camera.Matrix().mult(localToWorld());
+      
+    //     for (int i = 0; i < mesh.triangles.size(); i++) {
+    //        Triangle triangle = mesh.triangles.get(i);
+    //        Vector3[] img_pos = new Vector3[3];
+            
+    //        for (int j = 0; j < 3; j++) {
+    //            img_pos[j] = MVP.mult(triangle.verts[j].getVector4(1.0)).homogenized();
+    //        }
           
+    //      Vector3 v1 = triangle.verts[0];
+    //      Vector3 v2 = triangle.verts[1];
+    //      Vector3 v3 = triangle.verts[2];
           
+    //      Vector3 v1_v2 = new Vector3(
+    //          (v2.x-v1.x),
+    //          (v2.y-v1.y),
+    //          (v2.z-v1.z)
+    //      );
+    //      Vector3 v1_v3 = new Vector3(
+    //          (v3.x-v1.x),
+    //          (v3.y-v1.y),
+    //          (v3.z-v1.z)
+    //      );
           
+    //      Vector3 normal = Vector3.cross(v1_v2,v1_v3);
+    //      Vector3 triangleCenter = new Vector3(
+    //          (v1.x + v2.x + v3.x) / 3.0f,
+    //          (v1.y + v2.y + v3.y) / 3.0f,
+    //          (v1.z + v2.z + v3.z) / 3.0f
+    //      );
           
+    //      Vector3 viewDir = cam_position.sub(triangleCenter);
+    //      viewDir.normalize();
+    //      normal.normalize();
+    //      float dotProduct = Vector3.dot(normal, viewDir);
           
-          Vector3 v1 = triangle.verts[0];
-          Vector3 v2 = triangle.verts[1];
-          Vector3 v3 = triangle.verts[2];
-          
-          Vector3 v1_v2 = new Vector3(
-              (v2.x-v1.x),
-              (v2.y-v1.y),
-              (v2.z-v1.z)
-          );
-          Vector3 v1_v3 = new Vector3(
-              (v3.x-v1.x),
-              (v3.y-v1.y),
-              (v3.z-v1.z)
-          );
-          
-          Vector3 normal = Vector3.cross(v1_v2,v1_v3);
-          
-          
-          
-          Vector3 triangleCenter = new Vector3(
-              (v1.x + v2.x + v3.x) / 3.0f,
-              (v1.y + v2.y + v3.y) / 3.0f,
-              (v1.z + v2.z + v3.z) / 3.0f
-          );
-          
-          Vector3 viewDir = cam_position.sub(triangleCenter);
-          viewDir.normalize();
-          normal.normalize();
-          float dotProduct = Vector3.dot(normal, viewDir);
-          
-          if (dotProduct > 0) {
-              continue;
-          }
+    //      if (dotProduct > 0) {
+    //          continue;
+    //      }
   
-          for (int j = 0; j < img_pos.length; j++) {
-              img_pos[j] = new Vector3(
-                  map(img_pos[j].x, -1, 1, renderer_size.x, renderer_size.z),
-                  map(img_pos[j].y, -1, 1, renderer_size.y, renderer_size.w), 
-                  img_pos[j].z
-              );
+    //      for (int j = 0; j < img_pos.length; j++) {
+    //          img_pos[j] = new Vector3(
+    //              map(img_pos[j].x, -1, 1, renderer_size.x, renderer_size.z),
+    //              map(img_pos[j].y, -1, 1, renderer_size.y, renderer_size.w), 
+    //              img_pos[j].z
+    //          );
   
-              int screenIndex = int(img_pos[j].x) + int(img_pos[j].y) * int(renderer_size.z - renderer_size.x);
-              if (screenIndex >= 0 && screenIndex < GH_DEPTH.length) {
-                  if (img_pos[j].z < GH_DEPTH[screenIndex]) {
-                      GH_DEPTH[screenIndex] = img_pos[j].z;
-                      renderBuffer.pixels[screenIndex] = color(255 * img_pos[j].z); 
-                  }
-              }
-          }
+    //          int screenIndex = int(img_pos[j].x) + int(img_pos[j].y) * int(renderer_size.z - renderer_size.x);
+    //          if (screenIndex >= 0 && screenIndex < GH_DEPTH.length) {
+    //              if (img_pos[j].z < GH_DEPTH[screenIndex]) {
+    //                  GH_DEPTH[screenIndex] = img_pos[j].z;
+    //                  renderBuffer.pixels[screenIndex] = color(255 * img_pos[j].z); 
+    //              }
+    //          }
+    //      }
   
-          CGLine(img_pos[0].x, img_pos[0].y, img_pos[1].x, img_pos[1].y);
-          CGLine(img_pos[1].x, img_pos[1].y, img_pos[2].x, img_pos[2].y);
-          CGLine(img_pos[2].x, img_pos[2].y, img_pos[0].x, img_pos[0].y);
-          }
+    //      CGLine(img_pos[0].x, img_pos[0].y, img_pos[1].x, img_pos[1].y);
+    //      CGLine(img_pos[1].x, img_pos[1].y, img_pos[2].x, img_pos[2].y);
+    //      CGLine(img_pos[2].x, img_pos[2].y, img_pos[0].x, img_pos[0].y);
+    //      }
       
         
-    }
+    //}
 
     String getGameObjectName() {
         return name;
