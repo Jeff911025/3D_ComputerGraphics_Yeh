@@ -1,3 +1,5 @@
+float pv1,pv2,pv3;
+
 public void CGLine(float x1, float y1, float x2, float y2) {
     stroke(0);
     line(x1, y1, x2, y2);
@@ -168,10 +170,19 @@ private Vector3 intersect(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
     return new Vector3(Px, Py, 0);
 }
 
-
 public float getDepth(float x, float y, Vector3[] vertex ) {
-    // To - Do
-    // You need to calculate the depth (z) in the triangle (vertex) based on the positions x and y. and return the z value;
+    boolean tntd = false; // The near the darker?
+    boolean Use_equation = true; // Use plane equation or gravity as depth function
+    if(Use_equation) return getDepth_equation(x,y,vertex, tntd);
+    else return getDepth_gravity(x,y,vertex, tntd);
+}
+
+public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntd ) {
+    // TODO HW3
+    // You need to calculate the depth (z) in the triangle (vertex) based on the
+    // positions x and y. and return the z value;
+    //return 0.0;
+    
     float d;
     float a;
     float b;
@@ -188,11 +199,22 @@ public float getDepth(float x, float y, Vector3[] vertex ) {
     c = planeNorm.z;
     d = -(a * v1.x + b * v1.y + c * v1.z);
     result_z = -(a*x + b*y + d)/c;
-    result_z = Math.max(0,Math.min(result_z,1));
+    if(tntd){
+    result_z = (result_z + 1) / 2; //the near the darker
+    }else{
+    result_z = 1 - (result_z + 1) / 2; //the farther the darker
+    }
+    //if(v1.z!=pv1 && v2.z!=pv2 && v3.z!=pv3){
+    //    println(" is ", v1.z, v2.z, v3.z, result_z);
+    //    pv1 = v1.z;
+    //    pv2 = v2.z;
+    //    pv3 = v3.z;
+       
+    //}
     return result_z;
 }
 
-public float getDepth_mine(float x, float y, Vector3[] vertex) {
+public float getDepth_gravity(float x, float y, Vector3[] vertex, boolean tntd) {
     // TODO HW3
     // You need to calculate the depth (z) in the triangle (vertex) based on the
     // positions x and y. and return the z value;
@@ -211,8 +233,14 @@ public float getDepth_mine(float x, float y, Vector3[] vertex) {
     float lambda3 = triangleArea(v1.x, v1.y, v2.x, v2.y, x, y) / totalArea;
 
 
-    float z = lambda1 * v1.z + lambda2 * v2.z + lambda3 * v3.z;
-    return z;
+    float result_z = lambda1 * v1.z + lambda2 * v2.z + lambda3 * v3.z;
+    if(tntd){
+    result_z = (result_z + 1) / 2; //the near the darker
+    }else{
+    result_z = 1 - (result_z + 1) / 2; //the farther the darker
+    }
+    
+    return result_z;
     
 }
 
