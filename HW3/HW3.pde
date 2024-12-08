@@ -66,31 +66,60 @@ void cameraControl(){
 
     
     float moveSpeed = 0.1f;
-    float rotateSpeed = 0.01f;
-    
-    if (keyPressed) {
-        if (key == 'w' || key == 'W') {
-            cam_position.z += moveSpeed;  // camera forward
+    float lookSpeed = 0.01f;
+    boolean once = true;
+    if(mousePressed || keyPressed){
+      once = false;
+        if (keyPressed) {
+            if (key == 'w' || key == 'W') {
+                cam_position.z += moveSpeed;  // camera forward
+            }
+            if (key == 's' || key == 'S') {
+                cam_position.z -= moveSpeed;  // camera backward
+            }
+            if (key == 'a' || key == 'A') {
+                cam_position.x += moveSpeed;  // camera left
+            }
+            if (key == 'd' || key == 'D') {
+                cam_position.x -= moveSpeed;  // camera right
+            }
+            if (key == 'q' || key == 'Q') {
+                cam_position.y += moveSpeed;  // camera down
+            }
+            if (key == 'e' || key == 'E') {
+                cam_position.y -= moveSpeed;  // camera up
+            }
+            if (key == 'j' || key == 'J') {
+                lookat.x += lookSpeed;
+            }
+            if (key == 'k' || key == 'K') {
+                lookat.z -= lookSpeed;
+            }
+            if (key == 'l' || key == 'L') {
+                lookat.x -= lookSpeed;
+            }
+            if (key == 'u' || key == 'U') {
+                lookat.y += lookSpeed;
+            }
+            if (key == 'i' || key == 'I') {
+                lookat.z += lookSpeed;
+            }
+            if (key == 'o' || key == 'O') {
+                lookat.y -= lookSpeed;
+            }
         }
-        if (key == 's' || key == 'S') {
-            cam_position.z -= moveSpeed;  // camera backward
+        else if(mousePressed && (mouseButton == RIGHT)){
+            print("pressed: ");
+            once = false;
+            print(mouseX,mouseY);
+            lookat = new Vector3(lookat.x = 0.1,lookat.y = 0.1 ,lookat.z + 0.1);
         }
-        if (key == 'a' || key == 'A') {
-            cam_position.x += moveSpeed;  // camera left
+        main_camera.setPositionOrientation(cam_position, lookat);
+    }else{   
+        if(!once){
+            once = true;
         }
-        if (key == 'd' || key == 'D') {
-            cam_position.x -= moveSpeed;  // camera right
-        }
-        if (key == 'q' || key == 'Q') {
-            cam_position.y += moveSpeed;  // camera down
-        }
-        if (key == 'e' || key == 'E') {
-            cam_position.y -= moveSpeed;  // camera up
-            
-        }
-        //println(cam_position.x,cam_position.y,cam_position.z);
     }
-
     // 鼠标控制：控制相机的旋转
     //if (mousePressed) {
       
@@ -112,6 +141,4 @@ void cameraControl(){
     
         
     //}
-    main_camera.setPositionOrientation(cam_position, lookat);
-
 }
