@@ -171,8 +171,8 @@ private Vector3 intersect(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
 }
 
 public float getDepth(float x, float y, Vector3[] vertex ) {
-    boolean tntd = false; // The near the darker?
-    boolean Use_equation = true; // Use plane equation or gravity as depth function
+    boolean tntd = true; // The near the darker?
+    boolean Use_equation = false; // Use plane equation or gravity as depth function
     if(Use_equation) return getDepth_equation(x,y,vertex, tntd);
     else return getDepth_gravity(x,y,vertex, tntd);
 }
