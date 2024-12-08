@@ -65,28 +65,27 @@ void cameraControl(){
         
 
     
-    float moveSpeed = 0.1f;   // 相机移动的速度
-    float rotateSpeed = 0.01f; // 相机旋转的速度
+    float moveSpeed = 0.1f;
+    float rotateSpeed = 0.01f;
     
-    // 键盘控制：WASD 控制相机前后左右移动
     if (keyPressed) {
         if (key == 'w' || key == 'W') {
-            cam_position.z += moveSpeed;  // 相机前移
+            cam_position.z += moveSpeed;  // camera forward
         }
         if (key == 's' || key == 'S') {
-            cam_position.z -= moveSpeed;  // 相机后移
+            cam_position.z -= moveSpeed;  // camera backward
         }
         if (key == 'a' || key == 'A') {
-            cam_position.x += moveSpeed;  // 相机向左平移
+            cam_position.x += moveSpeed;  // camera left
         }
         if (key == 'd' || key == 'D') {
-            cam_position.x -= moveSpeed;  // 相机向右平移
+            cam_position.x -= moveSpeed;  // camera right
         }
         if (key == 'q' || key == 'Q') {
-            cam_position.y += moveSpeed;  // 相机向右平移
+            cam_position.y += moveSpeed;  // camera down
         }
         if (key == 'e' || key == 'E') {
-            cam_position.y -= moveSpeed;  // 相机向右平移
+            cam_position.y -= moveSpeed;  // camera up
             
         }
         //println(cam_position.x,cam_position.y,cam_position.z);
