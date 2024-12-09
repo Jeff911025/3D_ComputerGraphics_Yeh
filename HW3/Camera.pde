@@ -115,27 +115,32 @@ public class Camera {
         // Finally, pass the result into worldView matrix.
 
         worldView = Matrix4.Identity();
-        
         Vector3 topVector = Vector3.UnitY(); // topVector = (0,1,0)
-
         Vector3 forward = Vector3.sub(lookat, pos).unit_vector();
-    
         Vector3 right = Vector3.cross(topVector, forward).unit_vector();
-    
         Vector3 up = Vector3.cross(forward, right);
     
-        Matrix4 rotation = new Matrix4();
-        rotation.m[0] = right.x();   rotation.m[1] = up.x();   rotation.m[2] = -forward.x();   rotation.m[3] = 0;
-        rotation.m[4] = right.y();   rotation.m[5] = up.y();   rotation.m[6] = -forward.y();   rotation.m[7] = 0;
-        rotation.m[8] = right.z();   rotation.m[9] = up.z();   rotation.m[10] = -forward.z();  rotation.m[11] = 0;
-        rotation.m[12] = 0;          rotation.m[13] = 0;       rotation.m[14] = 0;            rotation.m[15] = 1;
+        Matrix4 GlobalRotationMatrix = new Matrix4();
+        //GlobalRotationMatrix.m[0] = right.x();   GlobalRotationMatrix.m[1] = up.x();   GlobalRotationMatrix.m[2] = -forward.x();   GlobalRotationMatrix.m[3] = 0;
+        //GlobalRotationMatrix.m[4] = right.y();   GlobalRotationMatrix.m[5] = up.y();   GlobalRotationMatrix.m[6] = -forward.y();   GlobalRotationMatrix.m[7] = 0;
+        //GlobalRotationMatrix.m[8] = right.z();   GlobalRotationMatrix.m[9] = up.z();   GlobalRotationMatrix.m[10] = -forward.z();  GlobalRotationMatrix.m[11] = 0;
+        //GlobalRotationMatrix.m[12] = 0;          GlobalRotationMatrix.m[13] = 0;       GlobalRotationMatrix.m[14] = 0;             GlobalRotationMatrix.m[15] = 1;
+        GlobalRotationMatrix.m[0] = right.x();     GlobalRotationMatrix.m[1] = right.y();  GlobalRotationMatrix.m[2] = right.z();    GlobalRotationMatrix.m[3] = 0;
+        GlobalRotationMatrix.m[4] = up.x();        GlobalRotationMatrix.m[5] = up.y();     GlobalRotationMatrix.m[6] = up.z();       GlobalRotationMatrix.m[7] = 0;
+        GlobalRotationMatrix.m[8] = forward.x();   GlobalRotationMatrix.m[9] = forward.y();GlobalRotationMatrix.m[10] = forward.z(); GlobalRotationMatrix.m[11] = 0;
+        GlobalRotationMatrix.m[12] = 0;            GlobalRotationMatrix.m[13] = 0;         GlobalRotationMatrix.m[14] = 0;           GlobalRotationMatrix.m[15] = 1;
     
-        Matrix4 translation = new Matrix4();
+        Matrix4 translation = new Matrix4(); // Translate the eye/camera to (0,0,0)
         translation.m[0] = 1; translation.m[1] = 0; translation.m[2] = 0; translation.m[3] = -pos.x();
         translation.m[4] = 0; translation.m[5] = 1; translation.m[6] = 0; translation.m[7] = -pos.y();
         translation.m[8] = 0; translation.m[9] = 0; translation.m[10] = 1; translation.m[11] = -pos.z();
         translation.m[12] = 0; translation.m[13] = 0; translation.m[14] = 0; translation.m[15] = 1;
-    
-        worldView = rotation.mult(translation);
+        Matrix4 mirrorXMatrix = new Matrix4();
+        mirrorXMatrix.m[0] = -1; mirrorXMatrix.m[1] = 0;  mirrorXMatrix.m[2] = 0;  mirrorXMatrix.m[3] = 0;
+        mirrorXMatrix.m[4] =  0; mirrorXMatrix.m[5] = 1;  mirrorXMatrix.m[6] = 0;  mirrorXMatrix.m[7] = 0;
+        mirrorXMatrix.m[8] =  0; mirrorXMatrix.m[9] = 0;  mirrorXMatrix.m[10] = 1; mirrorXMatrix.m[11] = 0;
+        mirrorXMatrix.m[12] = 0; mirrorXMatrix.m[13] = 0; mirrorXMatrix.m[14] = 0; mirrorXMatrix.m[15] = 1;
+        
+        worldView = mirrorXMatrix.mult(GlobalRotationMatrix).mult(translation);
     }
 }

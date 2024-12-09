@@ -112,7 +112,7 @@ void cameraControl(){
             print("pressed: ");
             once = false;
             print(mouseX,mouseY);
-            lookat = new Vector3(lookat.x = 0.1,lookat.y = 0.1 ,lookat.z + 0.1);
+            //lookat = new Vector3(lookat.x = 0.1,lookat.y = 0.1 ,lookat.z + 0.1);
         }
         main_camera.setPositionOrientation(cam_position, lookat);
     }else{   

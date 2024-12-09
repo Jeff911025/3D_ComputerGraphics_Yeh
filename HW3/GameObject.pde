@@ -125,7 +125,7 @@ public class GameObject {
 
         // Perform backface culling (skip if the normal is facing away)
         float dotProduct = Vector3.dot(normal, viewDir);
-        if (dotProduct < 0) {
+        if (dotProduct > 0) {
             continue;
         }
         //float render_width = renderer_size.z - renderer_size.x;

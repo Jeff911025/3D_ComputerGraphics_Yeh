@@ -171,13 +171,14 @@ private Vector3 intersect(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
 }
 
 public float getDepth(float x, float y, Vector3[] vertex ) {
-    boolean tntd = true; // The near the darker?
-    boolean Use_equation = false; // Use plane equation or gravity as depth function
-    if(Use_equation) return getDepth_equation(x,y,vertex, tntd);
-    else return getDepth_gravity(x,y,vertex, tntd);
+    boolean tntb = false; // The near the brighter?
+    boolean Use_equation = true; // Use plane equation or gravity as depth function
+    if(Use_equation) return getDepth_equation(x,y,vertex, tntb);
+    else return getDepth_gravity(x,y,vertex, tntb);
 }
 
-public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntd ) {
+private int callCount = 0; // 全局計數器
+public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntb ) {
     // TODO HW3
     // You need to calculate the depth (z) in the triangle (vertex) based on the
     // positions x and y. and return the z value;
@@ -199,10 +200,10 @@ public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntd 
     c = planeNorm.z;
     d = -(a * v1.x + b * v1.y + c * v1.z);
     result_z = -(a*x + b*y + d)/c;
-    if(tntd){
-    result_z = (result_z + 1) / 2; //the near the darker
+    if(tntb){
+    result_z = (result_z + 1) / 2; //the near the brighter
     }else{
-    result_z = 1 - (result_z + 1) / 2; //the farther the darker
+    result_z = 1 - (result_z + 1) / 2; //the farther the brighter
     }
     //if(v1.z!=pv1 && v2.z!=pv2 && v3.z!=pv3){
     //    println(" is ", v1.z, v2.z, v3.z, result_z);
@@ -211,10 +212,14 @@ public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntd 
     //    pv3 = v3.z;
        
     //}
+    callCount++;
+    if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
+        println("No way bro");
+    }
     return result_z;
 }
 
-public float getDepth_gravity(float x, float y, Vector3[] vertex, boolean tntd) {
+public float getDepth_gravity(float x, float y, Vector3[] vertex, boolean tntb) {
     // TODO HW3
     // You need to calculate the depth (z) in the triangle (vertex) based on the
     // positions x and y. and return the z value;
@@ -234,12 +239,15 @@ public float getDepth_gravity(float x, float y, Vector3[] vertex, boolean tntd) 
 
 
     float result_z = lambda1 * v1.z + lambda2 * v2.z + lambda3 * v3.z;
-    if(tntd){
-    result_z = (result_z + 1) / 2; //the near the darker
+    if(tntb){
+    result_z = (result_z + 1) / 2; //the near the brighter
     }else{
-    result_z = 1 - (result_z + 1) / 2; //the farther the darker
+    result_z = 1 - (result_z + 1) / 2; //the farther the brighter
     }
-    
+    callCount++;
+    if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
+        println("No way bro");
+    }
     return result_z;
     
 }
