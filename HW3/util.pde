@@ -213,9 +213,9 @@ public float getDepth_equation(float x, float y, Vector3[] vertex, boolean tntb 
        
     //}
     callCount++;
-    if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
-        println("No way bro");
-    }
+    //if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
+    //    println("No way bro");
+    //}
     return result_z;
 }
 
@@ -244,10 +244,10 @@ public float getDepth_gravity(float x, float y, Vector3[] vertex, boolean tntb) 
     }else{
     result_z = 1 - (result_z + 1) / 2; //the farther the brighter
     }
-    callCount++;
-    if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
-        println("No way bro");
-    }
+    //callCount++;
+    //if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
+    //    println("No way bro");
+    //}
     return result_z;
     
 }

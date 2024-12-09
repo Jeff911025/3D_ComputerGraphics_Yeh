@@ -118,4 +118,4 @@ if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
         println("No way bro");
 }
 ```
-Once the z of camera position is greater than one of the triangle vertex, the warning message will be printed.
+Once the z of camera position is greater than one of the triangle vertex, the warning message will be printed.(I comment this part since Lagging problem)
