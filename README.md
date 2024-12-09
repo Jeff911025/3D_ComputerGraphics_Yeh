@@ -40,13 +40,36 @@ Follows what teacher taught, constructing the matrix as:
 ```
 This matrix transforms points from projection space to image space.
 # Camera Transformation
+Follows teacher's instruction:
+![image](https://github.com/user-attachments/assets/083a5414-600d-4947-8dee-e6594fbe7e7c)
 
+```processing
+void setPositionOrientation(Vector3 pos, Vector3 lookat) {
+        worldView = Matrix4.Identity();
+        Vector3 topVector = Vector3.UnitY(); // topVector = (0,1,0)
+        Vector3 forward = Vector3.sub(lookat, pos).unit_vector();
+        Vector3 right = Vector3.cross(topVector, forward).unit_vector();
+        Vector3 up = Vector3.cross(forward, right);
+        Matrix4 GlobalRotationMatrix = new Matrix4();
+        GlobalRotationMatrix.m[0] = right.x();    GlobalRotationMatrix.m[1] = right.y();   GlobalRotationMatrix.m[2] = right.z();    GlobalRotationMatrix.m[3] = 0;
+        GlobalRotationMatrix.m[4] = up.x();       GlobalRotationMatrix.m[5] = up.y();      GlobalRotationMatrix.m[6] = up.z();       GlobalRotationMatrix.m[7] = 0;
+        GlobalRotationMatrix.m[8] = forward.x();  GlobalRotationMatrix.m[9] = forward.y(); GlobalRotationMatrix.m[10] = forward.z(); GlobalRotationMatrix.m[11] = 0;
+        GlobalRotationMatrix.m[12] = 0;           GlobalRotationMatrix.m[13] = 0;          GlobalRotationMatrix.m[14] = 0;           GlobalRotationMatrix.m[15] = 1;
+        Matrix4 mirrorXMatrix = new Matrix4();
+        mirrorXMatrix.m[0] = -1; mirrorXMatrix.m[1] = 0;  mirrorXMatrix.m[2] = 0;  mirrorXMatrix.m[3] = 0;
+        mirrorXMatrix.m[4] =  0; mirrorXMatrix.m[5] = 1;  mirrorXMatrix.m[6] = 0;  mirrorXMatrix.m[7] = 0;
+        mirrorXMatrix.m[8] =  0; mirrorXMatrix.m[9] = 0;  mirrorXMatrix.m[10] = 1; mirrorXMatrix.m[11] = 0;
+        mirrorXMatrix.m[12] = 0; mirrorXMatrix.m[13] = 0; mirrorXMatrix.m[14] = 0; mirrorXMatrix.m[15] = 1;
+        
+        worldView = mirrorXMatrix.mult(GlobalRotationMatrix).mult(translation);
+    }
+```
 # Depth Buffer
 Calculates the depth of a point in a triangle and allows for visualization control.  
-The appearance of depth (darker or lighter depending on proximity) can be toggled using the ```tntd``` boolean. Additionally, you can choose between two depth calculation methods by setting the ```Use_equation``` boolean.
+The appearance of depth (darker or lighter depending on proximity) can be toggled using the ```tntb``` boolean. Additionally, you can choose between two depth calculation methods by setting the ```Use_equation``` boolean.
 ```processing
 public float getDepth(float x, float y, Vector3[] vertex ) {
-    boolean tntd = true; // The near the darker?
+    boolean tntb = true; // The near the brighter?
     boolean Use_equation = true; // Use plane equation or gravity as depth function
     if(Use_equation) return getDepth_equation(x,y,vertex, tntd);
     else return getDepth_gravity(x,y,vertex, tntd);
@@ -85,5 +108,14 @@ if (dotProduct < 0) {
 - o/O : Camera look down  
 
 # Some observation
-- The center of gravity based depth buffer appears to lead to unsatisfied back culling.
-- When object is beyond the view, the object will still appear on screen in a inversed control manner, which is abnormal. May take time to fix.
+##  backculling and depthbuffer 1
+The center of gravity based depth buffer appears to lead to unsatisfied back culling.
+##  backculling and depthbuffer 2
+When object is not deeper than you (no matter the view of you, facing or backing), the object will still appear on screen in a inversed control manner and back culling works abnormal. May take more time to fix.
+In both util::getDepth_gravity and util::getDepth_equation:
+```processing
+if (max(v1.z, v2.z, v3.z) < cam_position.z && callCount % 100 == 0) {
+        println("No way bro");
+}
+```
+Once the z of camera position is greater than one of the triangle vertex, the warning message will be printed.
