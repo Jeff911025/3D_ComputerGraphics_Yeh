@@ -70,19 +70,19 @@ if (dotProduct < 0) {
 ```normal``` is the calculated normal vector of the triangle plane. ```viewDir``` represents teh vector from camera position to the center of the triangle plane.
 # Camera Control
 ### Camera position
-w/W : Camera move forward  
-a/A : Camera move backward  
-s/S : Camera move left  
-d/D : Camera move backward  
-q/Q : Camera move up  
-e/E : Camera move down  
+- w/W : Camera move forward  
+- a/A : Camera move backward  
+- s/S : Camera move left  
+- d/D : Camera move backward  
+- q/Q : Camera move up  
+- e/E : Camera move down  
 ### Camera lookat
-i/I : Camera look forward  
-ak/K : Camera look backward  
-j/J : Camera look left  
-l/L : Camera move backward  
-u/U : Camera look up  
-o/O : Camera look down  
+- i/I : Camera look forward  
+- k/K : Camera look backward  
+- j/J : Camera look left  
+- l/L : Camera move backward  
+- u/U : Camera look up  
+- o/O : Camera look down  
 
 # Some observation
 - The center of gravity based depth buffer appears to lead to unsatisfied back culling.
