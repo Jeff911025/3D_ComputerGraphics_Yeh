@@ -175,7 +175,7 @@ public class GameObject {
     Matrix4 translationMatrix = Matrix4.Trans(transform.position);
 
     return translationMatrix.mult(rotationMatrix).mult(scaleMatrix);
-}
+    }
 
     Matrix4 worldToLocal() {
         return Matrix4.Scale(transform.scale.inv()).mult(Matrix4.RotZ(-transform.rotation.z))
