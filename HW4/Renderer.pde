@@ -84,6 +84,8 @@ public class Inspector {
     Slider[] object_color_slider = new Slider[3];
 
     Slider[] light_color_slider = new Slider[3];
+    Slider light_intensity_slider;
+    
     String inspectName = "xyz";
     MaterialButton materialButton;
 
@@ -134,6 +136,10 @@ public class Inspector {
         light_color_slider[0].setValue(basic_light.light_color.x);
         light_color_slider[1].setValue(basic_light.light_color.y);
         light_color_slider[2].setValue(basic_light.light_color.z);
+        
+        light_intensity_slider = new Slider(box.pos.add(new Vector3(40, 30 + 20 + 400, 0)),
+                    new Vector3(box.pos.x + 40, box.pos.x + 150, 0), new Vector3(0, 5, 0), true);
+        light_intensity_slider.setValue(basic_light.intensity);
 
         materialButton = new MaterialButton(box.pos.add(new Vector3(40, 30 + 3 * 20 + 350, 0)),
                 new Vector3(120, 40, 0));
@@ -222,7 +228,7 @@ public class Inspector {
                             break;
                         case FM:
                             gameObject.me = MaterialEnum.GM;
-                            gameObject.material = new GroundMaterial();
+                            gameObject.material = new GouraudMaterial();
                             materialButton.name = "GouraudMaterial";
                             break;
                         case GM:
@@ -254,6 +260,16 @@ public class Inspector {
                 }
                 basic_light.light_color = new Vector3(light_color_slider[0].value(), light_color_slider[1].value(),
                         light_color_slider[2].value());
+                
+                textAlign(LEFT, CENTER);
+                textSize(15);
+                fill(0);
+                text("Intensity", box.pos.x, box.pos.y + 15 + 400);  
+                text("I", box.pos.x, light_intensity_slider.pos.y + 5);
+                text(light_intensity_slider.value(), box.pos.x + 170, light_intensity_slider.pos.y + 5);
+                light_intensity_slider.show();
+                light_intensity_slider.click();
+                basic_light.intensity = light_intensity_slider.value();
             }
         }
     }

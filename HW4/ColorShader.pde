@@ -46,7 +46,7 @@ public class FlatVertexShader extends VertexShader {
         Vector4[] gl_Position = new Vector4[3];
 
         // TODO HW4
-        // Here you must complete Flat shading.
+        // Here you have to complete Flat shading.
         // We have instantiated the relevant Material, and you may be missing some
         // variables.
         // Please refer to the templates of Phong Material and Phong Shader to complete
@@ -70,7 +70,7 @@ public class FlatFragmentShader extends FragmentShader {
     Vector4 main(Object[] varying) {
         Vector3 position = (Vector3) varying[0];
         // TODO HW4
-        // Here you must complete Flat shading.
+        // Here you have to complete Flat shading.
         // We have instantiated the relevant Material, and you may be missing some
         // variables.
         // Please refer to the templates of Phong Material and Phong Shader to complete
@@ -85,15 +85,15 @@ public class FlatFragmentShader extends FragmentShader {
     }
 }
 
-public class GroundVertexShader extends VertexShader {
+public class GouraudVertexShader extends VertexShader {
     Vector4[][] main(Object[] attribute, Object[] uniform) {
         Vector3[] aVertexPosition = (Vector3[]) attribute[0];
         Matrix4 MVP = (Matrix4) uniform[0];
 
         Vector4[] gl_Position = new Vector4[3];
 
-        // To - Do(HW4)
-        // Here you must complete Ground shading.
+        // TODO HW4
+        // Here you have to complete Gouraud shading.
         // We have instantiated the relevant Material, and you may be missing some
         // variables.
         // Please refer to the templates of Phong Material and Phong Shader to complete
@@ -114,12 +114,12 @@ public class GroundVertexShader extends VertexShader {
     }
 }
 
-public class GroundFragmentShader extends FragmentShader {
+public class GouraudFragmentShader extends FragmentShader {
     Vector4 main(Object[] varying) {
         Vector3 position = (Vector3) varying[0];
 
         // TODO HW4
-        // Here you must complete Ground shading.
+        // Here you have to complete Gouraud shading.
         // We have instantiated the relevant Material, and you may be missing some
         // variables.
         // Please refer to the templates of Phong Material and Phong Shader to complete

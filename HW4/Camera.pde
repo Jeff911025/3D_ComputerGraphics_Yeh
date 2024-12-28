@@ -11,7 +11,7 @@ public class Camera extends GameObject {
         hei = 256;
         worldView.makeIdentity();
         projection.makeIdentity();
-        transform.position = new Vector3(0, 15, -50);
+        transform.position = new Vector3(0, 0, -50);
         name = "Camera";
     }
 

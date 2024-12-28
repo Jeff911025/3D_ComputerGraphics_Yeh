@@ -158,7 +158,7 @@ public class ShapeButton extends Button {
 }
 
 public class MaterialButton extends Button {
-    String name = "PhongMaterail";
+    String name = "PhongMaterial";
 
     public MaterialButton(float x, float y, float w, float h) {
         super(x, y, w, h);

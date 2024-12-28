@@ -43,10 +43,10 @@ void setDepthBuffer(){
 }
 
 void draw() {
-    background(255);
+    backGouraud(255);
 
     engine.run();
-
+    cameraControl();
 }
 
 String selectFile() {
@@ -65,7 +65,7 @@ String selectFile() {
 }
 
 void cameraControl() {
-    // TODO HW3
+    // TODO HW3 (Optional)
     // You can write your own camera control function here.
     // Use setPositionOrientation(Vector3 position,Vector3 lookat) to modify the
     // ViewMatrix.
