@@ -109,6 +109,13 @@ static final public class Vector3 {
         result.z=n*z;
         return result;
     }
+    public static Vector3 mult(Vector3 a,Vector3 b) {
+        Vector3 result=new Vector3();
+        result.x=a.x*b.x;
+        result.y=a.y*b.y;
+        result.z=a.z*b.z;
+        return result;
+    }
 
 
     void product(float n) {
@@ -332,4 +339,5 @@ static public class Vector4 {
         public String toString() {
         return "x : "+x+" y : "+y+" z : "+z + " w : " + w;
     }
+    float x(){return x;}float y(){return y;}float z(){return z;}float w(){return w;}
 }

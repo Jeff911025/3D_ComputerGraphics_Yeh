@@ -43,7 +43,7 @@ void setDepthBuffer(){
 }
 
 void draw() {
-    backGouraud(255);
+    background(255);
 
     engine.run();
     cameraControl();

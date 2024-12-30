@@ -32,10 +32,20 @@ public class GameObject {
     void Draw() {
        
         if(mesh==null) return;
-        for (int i=0; i<mesh.triangles.size(); i++) {
+        for (int i=0; i<mesh.triangles.size(); i++) {    
+            
             Triangle triangle = mesh.triangles.get(i);
             Vector3[] position = triangle.verts;
             Vector4[][] result = material.vertexShader(triangle,localToWorld());
+            //println(result.length);
+            
+            //println(i, "-th triangle,");
+            //for(int j = 0; j<result[1].length; j++){
+            //  println(result[1][j]);
+            
+            //}
+            
+            
             
             Vector4[] gl_Position = result[0];
             Vector3[] s_Position = new Vector3[3];
@@ -56,13 +66,18 @@ public class GameObject {
                     int index = int((renderer_size.w - renderer_size.y) - y - 1) * int(renderer_size.z - renderer_size.x) + x;
                     float[] abg = barycentric(new Vector3(rx,ry,0.0) , gl_Position);
                     Vector4[] varing = new Vector4[result.length -1];
-                    
+                    //println(result.length);
                     for(int m=0;m<varing.length;m++){
-                         varing[m] = interpolation(abg , result[m+1]);
+                      //println(result[m+1]);
+                      //println(result[m+1].x, result[m+1].y,result[m+1].z,result[m+1].w);   
+                      varing[m] = interpolation(abg , result[m+1]);
+                         
+                         
                     }
                     
                     float z = interpolation(abg,s_Position).z;
                     Vector4 c = material.fragmentShader(new Vector3(rx,ry,z),varing);
+                    //println(c);
                     
                     if (GH_DEPTH[index] > z) {
                         GH_DEPTH[index] = z;
@@ -106,7 +121,22 @@ public class GameObject {
     Matrix4 localToWorld() {
         // TODO HW3
         // You need to calculate the model Matrix here.
-        return Matrix4.Identity();
+        //return Matrix4.Identity();
+    
+        Matrix4 scaleMatrix = Matrix4.Scale(transform.scale);
+    
+        Matrix4 rotationZ = Matrix4.RotZ(transform.rotation.z);
+        Matrix4 rotationX = Matrix4.RotX(transform.rotation.x);
+        Matrix4 rotationY = Matrix4.RotY(transform.rotation.y);
+        Matrix4 rotationMatrix = rotationZ.mult(rotationX).mult(rotationY);
+    
+        Matrix4 translationMatrix = Matrix4.Trans(transform.position);
+    
+        return translationMatrix.mult(rotationMatrix).mult(scaleMatrix);
+    
+        //Matrix4 result = Matrix4.Trans(transform.position).mult(Matrix4.RotY(transform.rotation.y)).mult(Matrix4.RotX(transform.rotation.x)).mult(Matrix4.RotZ(transform.rotation.z)).mult(Matrix4.Scale(transform.scale));
+        //return result;
+    
     }
 
     Matrix4 worldToLocal() {
