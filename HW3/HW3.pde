@@ -114,6 +114,7 @@ void cameraControl(){
             print(mouseX,mouseY);
             //lookat = new Vector3(lookat.x = 0.1,lookat.y = 0.1 ,lookat.z + 0.1);
         }
+        //println(cam_position);
         main_camera.setPositionOrientation(cam_position, lookat);
     }else{   
         if(!once){
