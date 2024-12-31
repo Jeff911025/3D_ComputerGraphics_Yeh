@@ -69,6 +69,7 @@ return new Vector4(illumination,1.0);
 # Gouraud Shading
 <img src="HW4/data/gouraud_demo.gif" alt="gouraud demo" width="50%" />
 Similar to flatshading, calculates color in vertex shader. But note that three vertex have their own color, and pass through the interpolation process. The fregment shader will receive the interpolated color for each pixel.
+
 GouraudVertexShader:
 ```processing
 Vector4 I0 = lighting(w_position[0].xyz(), w_normal[0].xyz(), albedo, kdksm);
