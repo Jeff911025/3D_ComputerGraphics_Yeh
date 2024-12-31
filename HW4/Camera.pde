@@ -113,67 +113,40 @@ public class Camera extends GameObject {
     }
 
     void setPositionOrientation(Vector3 pos, Vector3 lookat) {
-        //// TODO HW3
-        //// This function takes two parameters, which are the position of the camera and
-        //// the point the camera is looking at.
-        //// We uses topVector = (0,1,0) to calculate the eye matrix.
-        //// Finally, pass the result into worldView matrix.
-
-        //worldView = Matrix4.Identity();
-        //Vector3 topVector = Vector3.UnitY(); // topVector = (0,1,0)
-        //Vector3 forward = Vector3.sub(lookat, pos).unit_vector();
-        //Vector3 right = Vector3.cross(topVector, forward).unit_vector();
-        //Vector3 up = Vector3.cross(forward, right);
-    
-        //Matrix4 GlobalRotationMatrix = new Matrix4();
-        ////GlobalRotationMatrix.m[0] = right.x();   GlobalRotationMatrix.m[1] = up.x();   GlobalRotationMatrix.m[2] = -forward.x();   GlobalRotationMatrix.m[3] = 0;
-        ////GlobalRotationMatrix.m[4] = right.y();   GlobalRotationMatrix.m[5] = up.y();   GlobalRotationMatrix.m[6] = -forward.y();   GlobalRotationMatrix.m[7] = 0;
-        ////GlobalRotationMatrix.m[8] = right.z();   GlobalRotationMatrix.m[9] = up.z();   GlobalRotationMatrix.m[10] = -forward.z();  GlobalRotationMatrix.m[11] = 0;
-        ////GlobalRotationMatrix.m[12] = 0;          GlobalRotationMatrix.m[13] = 0;       GlobalRotationMatrix.m[14] = 0;             GlobalRotationMatrix.m[15] = 1;
-        //GlobalRotationMatrix.m[0] = right.x();     GlobalRotationMatrix.m[1] = right.y();  GlobalRotationMatrix.m[2] = right.z();    GlobalRotationMatrix.m[3] = 0;
-        //GlobalRotationMatrix.m[4] = up.x();        GlobalRotationMatrix.m[5] = up.y();     GlobalRotationMatrix.m[6] = up.z();       GlobalRotationMatrix.m[7] = 0;
-        //GlobalRotationMatrix.m[8] = forward.x();   GlobalRotationMatrix.m[9] = forward.y();GlobalRotationMatrix.m[10] = forward.z(); GlobalRotationMatrix.m[11] = 0;
-        //GlobalRotationMatrix.m[12] = 0;            GlobalRotationMatrix.m[13] = 0;         GlobalRotationMatrix.m[14] = 0;           GlobalRotationMatrix.m[15] = 1;
-    
-        //Matrix4 translation = new Matrix4(); // Translate the eye/camera to (0,0,0)
-        //translation.m[0] = 1; translation.m[1] = 0; translation.m[2] = 0; translation.m[3] = -pos.x();
-        //translation.m[4] = 0; translation.m[5] = 1; translation.m[6] = 0; translation.m[7] = -pos.y();
-        //translation.m[8] = 0; translation.m[9] = 0; translation.m[10] = 1; translation.m[11] = -pos.z();
-        //translation.m[12] = 0; translation.m[13] = 0; translation.m[14] = 0; translation.m[15] = 1;
-        //Matrix4 mirrorXMatrix = new Matrix4();
-        //mirrorXMatrix.m[0] = -1; mirrorXMatrix.m[1] = 0;  mirrorXMatrix.m[2] = 0;  mirrorXMatrix.m[3] = 0;
-        //mirrorXMatrix.m[4] =  0; mirrorXMatrix.m[5] = 1;  mirrorXMatrix.m[6] = 0;  mirrorXMatrix.m[7] = 0;
-        //mirrorXMatrix.m[8] =  0; mirrorXMatrix.m[9] = 0;  mirrorXMatrix.m[10] = 1; mirrorXMatrix.m[11] = 0;
-        //mirrorXMatrix.m[12] = 0; mirrorXMatrix.m[13] = 0; mirrorXMatrix.m[14] = 0; mirrorXMatrix.m[15] = 1;
-        
-        //worldView = mirrorXMatrix.mult(GlobalRotationMatrix).mult(translation);
-        
-        Vector3 neg_pos = new Vector3(-pos.x,-pos.y,-pos.z);
-        Vector3 view_vector = new Vector3(lookat.x - pos.x, lookat.y - pos.y,lookat.z - pos.z).unit_vector();
-        Vector3 top_vector = new Vector3(0,1,0);
-        Vector3 v1 = Vector3.cross(top_vector,view_vector).unit_vector();
-        Vector3 v2 = Vector3.cross(view_vector,v1).unit_vector();
-        Matrix4 GRM = new Matrix4();
-        Matrix4 matrix_trans = Matrix4.Trans(neg_pos);
-        Matrix4 x_mirror = new Matrix4();
-        x_mirror.m[0] = -1;
-        x_mirror.m[5] = -1.0f;
-        x_mirror.m[10] = 1.0f;
-        x_mirror.m[15] = 1.0f;
-        GRM.m[0] = v1.x;
-        GRM.m[1] = v1.y;
-        GRM.m[2] = v1.z;
-        GRM.m[4] = v2.x;
-        GRM.m[5] = v2.y;
-        GRM.m[6] = v2.z;
-        GRM.m[8] = view_vector.x;
-        GRM.m[9] = view_vector.y;
-        GRM.m[10] = view_vector.z;
-        GRM.m[15] = 1.0;
-        // To - Do
-        // This function takes two parameters, which are the position of the camera and the point the camera is looking at.
+        // TODO HW3
+        // This function takes two parameters, which are the position of the camera and
+        // the point the camera is looking at.
         // We uses topVector = (0,1,0) to calculate the eye matrix.
         // Finally, pass the result into worldView matrix.
-        worldView = x_mirror.mult(GRM).mult(matrix_trans);
+
+        worldView = Matrix4.Identity();
+        Vector3 topVector = Vector3.UnitY(); // topVector = (0,1,0)
+        Vector3 forward = Vector3.sub(lookat, pos).unit_vector();
+        Vector3 right = Vector3.cross(topVector, forward).unit_vector();
+        Vector3 up = Vector3.cross(forward, right);
+    
+        Matrix4 GlobalRotationMatrix = new Matrix4();
+        //GlobalRotationMatrix.m[0] = right.x();   GlobalRotationMatrix.m[1] = up.x();   GlobalRotationMatrix.m[2] = -forward.x();   GlobalRotationMatrix.m[3] = 0;
+        //GlobalRotationMatrix.m[4] = right.y();   GlobalRotationMatrix.m[5] = up.y();   GlobalRotationMatrix.m[6] = -forward.y();   GlobalRotationMatrix.m[7] = 0;
+        //GlobalRotationMatrix.m[8] = right.z();   GlobalRotationMatrix.m[9] = up.z();   GlobalRotationMatrix.m[10] = -forward.z();  GlobalRotationMatrix.m[11] = 0;
+        //GlobalRotationMatrix.m[12] = 0;          GlobalRotationMatrix.m[13] = 0;       GlobalRotationMatrix.m[14] = 0;             GlobalRotationMatrix.m[15] = 1;
+        GlobalRotationMatrix.m[0] = right.x();     GlobalRotationMatrix.m[1] = right.y();  GlobalRotationMatrix.m[2] = right.z();    GlobalRotationMatrix.m[3] = 0;
+        GlobalRotationMatrix.m[4] = up.x();        GlobalRotationMatrix.m[5] = up.y();     GlobalRotationMatrix.m[6] = up.z();       GlobalRotationMatrix.m[7] = 0;
+        GlobalRotationMatrix.m[8] = forward.x();   GlobalRotationMatrix.m[9] = forward.y();GlobalRotationMatrix.m[10] = forward.z(); GlobalRotationMatrix.m[11] = 0;
+        GlobalRotationMatrix.m[12] = 0;            GlobalRotationMatrix.m[13] = 0;         GlobalRotationMatrix.m[14] = 0;           GlobalRotationMatrix.m[15] = 1;
+    
+        Matrix4 translation = new Matrix4(); // Translate the eye/camera to (0,0,0)
+        translation.m[0] = 1; translation.m[1] = 0; translation.m[2] = 0; translation.m[3] = -pos.x();
+        translation.m[4] = 0; translation.m[5] = 1; translation.m[6] = 0; translation.m[7] = -pos.y();
+        translation.m[8] = 0; translation.m[9] = 0; translation.m[10] = 1; translation.m[11] = pos.z();
+        translation.m[12] = 0; translation.m[13] = 0; translation.m[14] = 0; translation.m[15] = 1;
+        Matrix4 mirrorXMatrix = new Matrix4();
+        mirrorXMatrix.m[0] = -1; mirrorXMatrix.m[1] = 0;  mirrorXMatrix.m[2] = 0;  mirrorXMatrix.m[3] = 0;
+        mirrorXMatrix.m[4] =  0; mirrorXMatrix.m[5] = 1;  mirrorXMatrix.m[6] = 0;  mirrorXMatrix.m[7] = 0;
+        mirrorXMatrix.m[8] =  0; mirrorXMatrix.m[9] = 0;  mirrorXMatrix.m[10] = 1; mirrorXMatrix.m[11] = 0;
+        mirrorXMatrix.m[12] = 0; mirrorXMatrix.m[13] = 0; mirrorXMatrix.m[14] = 0; mirrorXMatrix.m[15] = 1;
+        
+        worldView = mirrorXMatrix.mult(GlobalRotationMatrix).mult(translation);
+        
     }
 }
