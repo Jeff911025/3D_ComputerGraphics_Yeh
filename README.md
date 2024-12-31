@@ -29,7 +29,7 @@ After that we scale the barycentric weights $\alpha$, $\beta$, $\gamma$ as follo
    ```
 
 # Phong Shading
-<img src="HW4/data/phong_demo.gif" alt="phong demo" width="100%" />
+<img src="HW4/data/phong_demo.gif" alt="phong demo" width="60%" />
 In vertex shader only pass the coordinates and normal, and after the interpolation, the lighting is calculated for each fregment(pixel) based on interpolated coordinates and normals.
 
 PhongVertexShader:
@@ -46,7 +46,7 @@ return new Vector4(illumination, 1.0);
 ```
 
 # Flat Shading
-<img src="HW4/data/Flat_demo.gif" alt="flat demo" width="100%" />
+<img src="HW4/data/Flat_demo.gif" alt="flat demo" width="60%" />
 In vertex shader making three vertex umiform color (based on the center of gravity and surface normal), doing this the interpolation is useless, all pixels belonging to same face will get same color.
 
 FlatVertexShader:
@@ -67,7 +67,7 @@ return new Vector4(illumination,1.0);
 
 
 # Gouraud Shading
-<img src="HW4/data/gouraud_demo.gif" alt="gouraud demo" width="100%" />
+<img src="HW4/data/gouraud_demo.gif" alt="gouraud demo" width="60%" />
 Similar to flatshading, calculates color in vertex shader. But note that three vertex have their own color, and pass through the interpolation process. The fregment shader will receive the interpolated color for each pixel.
 
 GouraudVertexShader:
