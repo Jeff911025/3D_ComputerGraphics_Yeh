@@ -179,8 +179,8 @@ public Vector4 lighting(Vector3 w_position, Vector3 w_normal, Vector3 albedo, Ve
       Vector3 lightVector = Vector3.sub(basic_light.transform.position, w_position);
       Vector3 viewVector = Vector3.sub(lookat, main_camera.transform.position);
       float normalDot = Vector3.dot(w_normal, lightVector);
-      
-      Vector3 I = Vector3.mult(Vector3.mult(1.0f, AMBIENT_LIGHT), albedo);      // ambient light
+      // ambient light
+      Vector3 I = Vector3.mult(Vector3.mult(1.0f, AMBIENT_LIGHT), albedo);      
       
       if (normalDot > 0) {
           float d = lightVector.length();
@@ -191,7 +191,7 @@ public Vector4 lighting(Vector3 w_position, Vector3 w_normal, Vector3 albedo, Ve
           
           //Vector3 reflectVector = Vector3.mult(2 * normalDot, w_normal);
           Vector3 halfVector = Vector3.add(lightVector, viewVector).unit_vector();
-          Vector3 specularLight = Vector3.mult(pow(Vector3.dot(halfVector, w_normal), kdksm.z), basic_light.light_color);
+          Vector3 specularLight = Vector3.mult(Math.max(0.0f, pow(Vector3.dot(halfVector, w_normal), kdksm.z)), basic_light.light_color);//(H·N)^m and if less than 0 then 0.
           specularLight = Vector3.mult(kdksm.y * fatt, specularLight);    // Ks
           I = Vector3.add(I, specularLight);  
       }

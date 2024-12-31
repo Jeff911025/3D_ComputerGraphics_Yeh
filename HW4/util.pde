@@ -304,7 +304,7 @@ float[] barycentric(Vector3 P, Vector4[] verts) {
     Vector4 CW = verts[2];
     
     float alpha=(P.x*(B.y-C.y)+P.y*(C.x-B.x)+(B.x*C.y-C.x*B.y))/(A.x*(B.y-C.y)+A.y*(C.x-B.x)+(B.x*C.y-C.x*B.y));
-    float beta=(P.x*(C.y-A.y)+P.y*(A.x-C.x)+(C.x*A.y-A.x*C.y))/(B.x*(C.y-A.y)+B.y*(A.x-C.x)+(C.x*A.y-A.x*C.y));
+    float beta=(P.x*(C.y-A.y)+P.y*(A.x-C.x)+(C.x*A.y-A.x*C.y))/(A.x*(B.y-C.y)+A.y*(C.x-B.x)+(B.x*C.y-C.x*B.y));
     float gamma=1-alpha-beta;
     float target_z;
     target_z = 1/(alpha*(1/AW.w) + beta*(1/BW.w) + gamma*(1/CW.w));
@@ -316,6 +316,10 @@ float[] barycentric(Vector3 P, Vector4[] verts) {
     float[] result = {alpha, beta, gamma};
 
     return result;
+    
+ 
+    
+    
 }
 
 
